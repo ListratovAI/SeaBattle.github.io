@@ -1,0 +1,72 @@
+.string {
+    background-color: white;
+    display: flex;
+}
+.square {
+    background-color: blue;
+    height: 30px;
+    width: 30px;
+    margin-left: 3px;
+    margin-top: 3px;
+}
+.container {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+.containerForUserField {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.containerForGame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.ship4 {
+    background-color: tomato;
+}
+.ship3 {
+    background-color: green;
+}
+.ship2 {
+    background-color: darkmagenta;
+}
+.ship1 {
+    background-color: gold;
+}
+.test {
+    background-color: black;
+}
+.buttonShip4 {
+    width: 150px;
+    height: 30px;
+    margin-top: 35px;
+    background-color: tomato;
+}
+.userShip4 {
+    background-color: tomato;
+}
+.userShip3 {
+    background-color: green;
+}
+.buttonShip3 {
+    width: 100px;
+    height: 30px;
+    margin-top: 35px;
+    background-color: green;
+}
+.mouseOver4 {
+    background-color: lightcoral ;
+}
+.mouseOver3 {
+    background-color: greenyellow;
+}
+.mouseOverBad4 {
+    background-color: black ;
+}
+.mouseOverBad3 {
+    background-color: black ;
+}
