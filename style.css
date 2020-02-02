@@ -26,16 +26,16 @@
 
 }
 .ship4 {
-    background-color: tomato;
+    background-color: blue;
 }
 .ship3 {
-    background-color: green;
+    background-color: blue;
 }
 .ship2 {
-    background-color: darkmagenta;
+    background-color: blue;
 }
 .ship1 {
-    background-color: gold;
+    background-color: blue;
 }
 .test {
     background-color: black;
@@ -46,27 +46,64 @@
     margin-top: 35px;
     background-color: tomato;
 }
-.userShip4 {
-    background-color: tomato;
-}
-.userShip3 {
-    background-color: green;
-}
 .buttonShip3 {
     width: 100px;
     height: 30px;
     margin-top: 35px;
     background-color: green;
 }
+.buttonShip2 {
+    width: 60px;
+    height: 30px;
+    margin-top: 35px;
+    background-color: darkmagenta;
+}
+.buttonShip1 {
+    width: 30px;
+    height: 30px;
+    margin-top: 35px;
+    background-color: gold;
+}
+.userShip4 {
+    background-color: gold;
+}
+.userShip3 {
+    background-color: gold;
+}
+.userShip2 {
+    background-color: gold;
+}
+.userShip1 {
+    background-color: gold;
+}
+
 .mouseOver4 {
     background-color: lightcoral ;
 }
 .mouseOver3 {
     background-color: greenyellow;
 }
+.mouseOver2 {
+    background-color: violet;
+}
+.mouseOver1 {
+    background-color: goldenrod;
+}
 .mouseOverBad4 {
     background-color: black ;
 }
 .mouseOverBad3 {
     background-color: black ;
+}
+.mouseOverBad2 {
+    background-color: black ;
+}
+.mouseOverBad1 {
+    background-color: black ;
+}
+.crackShip {
+    background-color: brown;
+}
+.FailShot {
+    background-color: skyblue;
 }
