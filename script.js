@@ -209,7 +209,9 @@ function makeGameUserField(size) {
                 userField[i-1][j] = document.createElement('div');
                 userField[i-1][j].classList.add('square',`x${i}y${j+1}`);
                 userField[i-1][j].label=false;
-                userField[i-1][j].shipIsHere=false;
+                userField[i-1][j].shipIsHere=0;
+                userField[i-1][j].numberOfThisTypeShip=0;
+                userField[i-1][j].labelShooting=false;
                 makeGameUserField[`containerNum${i}`].append(userField[i-1][j]);
                 }
     }
@@ -308,50 +310,92 @@ function addShipsInt() {
         }
         else if (desk==3 && counter3==1){
             buttonShip3.removeEventListener('click', addShip3 );
+            --counter3;
         }
         else if (desk==3 && counter3!=1){
-            counter3--;
+            --counter3;
         }
         else if (desk==2 && counter2==1){
             buttonShip2.removeEventListener('click', addShip2 );
+            --counter2;
         }
         else if (desk==2 && counter2!=1){
-            counter2--;
+            --counter2;
         }
         else if (desk==1 && counter1==1){
             buttonShip1.removeEventListener('click', addShip1 );
         }
         else if (desk==1 && counter1!=1){
-            counter1--;
+            --counter1;
         }
 //установка кораблей
     if (userDirection==true){
+        loop:
         for (let i=0;i<desk;i++){
             if ((i1+desk-1)<=9) {
                 userField[i1+i][j1].classList.remove(`mouseOver${desk}`);
                 userField[i1+i][j1].classList.add(`userShip${desk}`);
-                userField[i1+i][j1].shipIsHere=true;
+                userField[i1+i][j1].shipIsHere=desk;
                 intLabelUser(i1+i,j1);
+                if (desk==2) {
+                userField[i1+i][j1].numberOfThisTypeShip = counter2+1;
+                continue loop;
+                }
+                else if (desk==3) {
+                userField[i1+i][j1].numberOfThisTypeShip = counter3+1;
+                continue loop;
+                }
+                
+                
             } else {
                 userField[i1-i][j1].classList.remove(`mouseOver${desk}`);
                 userField[i1-i][j1].classList.add(`userShip${desk}`);
-                userField[i1-i][j1].shipIsHere=true;
+                userField[i1-i][j1].shipIsHere=desk;
                 intLabelUser(i1-i,j1);
+                if (desk==2) {
+                userField[i1-i][j1].numberOfThisTypeShip = counter2+1;
+                continue loop;
+                }
+                else if (desk==3) {
+                userField[i1-i][j1].numberOfThisTypeShip = counter3+1;
+                continue loop;
+                }
+                
+                
             }
         }
     }
     else {
+        loop2:
         for (let j=0;j<desk;j++){
             if ((j1+desk-1)<=9) {
                 userField[i1][j1+j].classList.remove(`mouseOver${desk}`);
                 userField[i1][j1+j].classList.add(`userShip${desk}`);
-                userField[i1][j1+j].shipIsHere=true;
+                userField[i1][j1+j].shipIsHere=desk;
                 intLabelUser(i1,j1+j);
+                if (desk==2) {
+                userField[i1][j1+j].numberOfThisTypeShip = counter2+1;
+                continue loop2;
+                }
+                else if (desk==3) {
+                userField[i1][j1+j].numberOfThisTypeShip = counter3+1;
+                continue loop2;
+                }
+                
             } else {
                 userField[i1][j1-j].classList.remove(`mouseOver${desk}`);
                 userField[i1][j1-j].classList.add(`userShip${desk}`);
-                userField[i1][j1-j].shipIsHere=true;
+                userField[i1][j1-j].shipIsHere=desk;
                 intLabelUser(i1,j1-j);
+                if (desk==2) {
+                userField[i1][j1-j].numberOfThisTypeShip = counter2+1;
+                continue loop2;
+                }
+                else if (desk==3) {
+                userField[i1][j1-j].numberOfThisTypeShip = counter3+1;
+                continue loop2;
+                }
+                
             }
         }
     }
@@ -492,7 +536,7 @@ buttonShip2.addEventListener('click', addShip2 );
 buttonShip1.addEventListener('click', addShip1 );
 
 
-//напишем функцию для атаки на моё поле
+
 let shipShootX1;
 let shipShootX2;
 let shipShootX3;
@@ -535,21 +579,6 @@ let Desk3Ship2Health=3;
 let Desk4Ship1Health=4;
 
 
-function AttackAI() {
-    xAttackAI = getRandom(0,9);
-    yAttackAI = getRandom(0,9);
-    if (userField[xAttackAI][yAttackAI].shipIsHere==true) {
-        userField[xAttackAI][yAttackAI].classList.add('crackShip');
-        alert ('В Вас попали!');
-        AttackAI();
-    }
-    else if (userField[xAttackAI][yAttackAI].shipIsHere==false) {
-        userField[xAttackAI][yAttackAI].classList.add('FailShot');
-        alert ('В Вас не попали!');
-        AttackUser();
-    }
-
-}
 
 //функция для атаки на вражеское поле 
 function AttackUser() {
@@ -810,3 +839,334 @@ function intShootingLabel(i,j) {
         field[i-1][j-1].labelShooting = true;}
     catch (a) {console.log ("не поставилось");}
     }
+    function intShootingLabelAI(i,j) {
+        userField[i][j].labelShooting=true;
+        try {userField[i+1][j].classList.add('FailShot');
+        userField[i+1][j].labelShooting = true;} 
+        catch (a) {console.log ("не поставилось");}
+        try {userField[i+1][j+1].classList.add('FailShot');
+        userField[i+1][j+1].labelShooting = true;} 
+        catch (a) {console.log ("не поставилось");}
+        try {userField[i+1][j-1].classList.add('FailShot');
+        userField[i+1][j-1].labelShooting = true;}
+        catch (a) {console.log ("не поставилось");}
+        try {userField[i][j+1].classList.add('FailShot');
+        userField[i][j+1].labelShooting = true;} 
+        catch (a) {console.log ("не поставилось");}
+        try {userField[i][j-1].classList.add('FailShot');
+        userField[i][j-1].labelShooting = true;}
+        catch (a) {console.log ("не поставилось");}
+        try {userField[i-1][j].classList.add('FailShot');
+        userField[i-1][j].labelShooting = true;}
+        catch (a) {console.log ("не поставилось");}
+        try {userField[i-1][j+1].classList.add('FailShot');
+        userField[i-1][j+1].labelShooting = true;}
+        catch (a) {console.log ("не поставилось");}
+        try {userField[i-1][j-1].classList.add('FailShot');
+        userField[i-1][j-1].labelShooting = true;}
+        catch (a) {console.log ("не поставилось");}
+        }
+
+     let Desk2Ship1HealthUser=2;
+     let Desk2Ship2HealthUser=2;
+     let Desk2Ship3HealthUser=2;
+     let Desk3Ship1HealthUser=3;
+     let Desk3Ship2HealthUser=3;
+     let Desk4Ship1HealthUser=4;
+
+     //массив для хранения информации о попадании в корабли
+     let shootingXY = [[],[]];
+
+     let needToShootToShip = false;
+    function AttackAI() {
+
+
+function getXY() {
+    if (needToShootToShip == true) {
+        AI();
+        return;
+    }
+    else {
+        xAttackAI = getRandom(0,9);
+        yAttackAI = getRandom(0,9);
+        checkByLabelShootingAI();
+    }
+}
+
+function AI() {
+    needToShootToShip = true;
+    let shootToDirection = getRandom(0,3);
+    if (shootToDirection == 0 && (xAttackAI+1)<=9) {
+        xAttackAI=xAttackAI+1;
+        checkByLabelShootingAI();
+        return;
+        }
+    else if (shootToDirection == 1 && (xAttackAI-1)>=0) {
+        xAttackAI=xAttackAI-1;
+        checkByLabelShootingAI();
+        return;
+    }
+    else if (shootToDirection == 2 && (yAttackAI+1)<=9) {
+        yAttackAI=yAttackAI+1;
+        checkByLabelShootingAI();
+        return;
+    }
+    else if (shootToDirection == 3 && (yAttackAI-1)>=0) {
+        yAttackAI=yAttackAI-1;
+        checkByLabelShootingAI();
+        return;
+    }
+    else {
+        needToShootToShip=false;
+        AttackAI();
+        return;
+    }
+    }   
+    
+
+
+
+        function checkByLabelShootingAI() {
+            if (userField[xAttackAI][yAttackAI].labelShooting == false) {
+                AttackAIInt();
+                return;
+            }
+            else if (userField[xAttackAI][yAttackAI].labelShooting == true) {
+                {
+                    AttackAI();
+                    return;
+              
+            }
+        }}
+        getXY ();
+
+
+        function AttackAIInt() { 
+        if (userField[xAttackAI][yAttackAI].shipIsHere==1) {
+            userField[xAttackAI][yAttackAI].classList.add('crackShip');
+            userField[xAttackAI][yAttackAI].labelShooting=true;
+            intShootingLabelAI(xAttackAI,yAttackAI);
+            userField[xAttackAI][yAttackAI].classList.remove('FailShot');
+            alert ('Ваш однопалубный корабль потопили!');
+            needToShootToShip=false;
+            AttackAI();
+            return;
+        }
+        else if (userField[xAttackAI][yAttackAI].shipIsHere==2 && userField[xAttackAI][yAttackAI].numberOfThisTypeShip==1) {
+            if (Desk2Ship1HealthUser==2) {
+            userField[xAttackAI][yAttackAI].classList.add('crackShip');
+            userField[xAttackAI][yAttackAI].labelShooting=true;
+            shootingXY[0][0]=xAttackAI;
+            shootingXY[1][0]=yAttackAI;
+            Desk2Ship1HealthUser=1;
+            alert ('В ваш корабль попали!');
+            AI();
+            return;
+            }
+            else if (Desk2Ship1HealthUser==1) {
+                shootingXY[0][1]=xAttackAI;
+                shootingXY[1][1]=yAttackAI;
+                userField[xAttackAI][yAttackAI].classList.add('crackShip');
+                intShootingLabelAI(shootingXY[0][0],shootingXY[1][0]);
+                intShootingLabelAI(shootingXY[0][1],shootingXY[1][1]);
+                userField[shootingXY[0][0]][shootingXY[1][0]].classList.remove('FailShot');
+                userField[shootingXY[0][1]][shootingXY[1][1]].classList.remove('FailShot');
+                Desk2Ship1HealthUser=0;
+                needToShootToShip = false;
+                alert ('Ваш двухпалубный корабль потопили!');
+                AttackAI();
+                return;
+                }
+        }
+        else if (userField[xAttackAI][yAttackAI].shipIsHere==2 && userField[xAttackAI][yAttackAI].numberOfThisTypeShip==2) {
+            if (Desk2Ship2HealthUser==2) {
+            userField[xAttackAI][yAttackAI].classList.add('crackShip');
+            userField[xAttackAI][yAttackAI].labelShooting=true;
+            shootingXY[0][2]=xAttackAI;
+            shootingXY[1][2]=yAttackAI;
+            Desk2Ship2HealthUser=1;
+            alert ('В ваш корабль попали!');
+            AI();
+            return;
+            }
+            else if (Desk2Ship2HealthUser==1) {
+                shootingXY[0][3]=xAttackAI;
+                shootingXY[1][3]=yAttackAI;
+                userField[xAttackAI][yAttackAI].classList.add('crackShip');
+                intShootingLabelAI(shootingXY[0][2],shootingXY[1][2]);
+                intShootingLabelAI(shootingXY[0][3],shootingXY[1][3]);
+                userField[shootingXY[0][2]][shootingXY[1][2]].classList.remove('FailShot');
+                userField[shootingXY[0][3]][shootingXY[1][3]].classList.remove('FailShot');
+                Desk2Ship2HealthUser=0;
+                needToShootToShip = false;
+                alert ('Ваш двухпалубный корабль потопили!');
+                AttackAI();
+                return;
+                }
+        }
+        else if (userField[xAttackAI][yAttackAI].shipIsHere==2 && userField[xAttackAI][yAttackAI].numberOfThisTypeShip==3) {
+            if (Desk2Ship3HealthUser==2) {
+            userField[xAttackAI][yAttackAI].classList.add('crackShip');
+            userField[xAttackAI][yAttackAI].labelShooting=true;
+            shootingXY[0][4]=xAttackAI;
+            shootingXY[1][4]=yAttackAI;
+            Desk2Ship3HealthUser=1;
+            alert ('В ваш корабль попали!');
+            AI();
+            return;
+            }
+            else if (Desk2Ship3HealthUser==1) {
+                shootingXY[0][5]=xAttackAI;
+                shootingXY[1][5]=yAttackAI;
+                userField[xAttackAI][yAttackAI].classList.add('crackShip');
+                intShootingLabelAI(shootingXY[0][4],shootingXY[1][4]);
+                intShootingLabelAI(shootingXY[0][5],shootingXY[1][5]);
+                userField[shootingXY[0][4]][shootingXY[1][4]].classList.remove('FailShot');
+                userField[shootingXY[0][5]][shootingXY[1][5]].classList.remove('FailShot');
+                Desk2Ship3HealthUser=0;
+                needToShootToShip = false;
+                alert ('Ваш двухпалубный корабль потопили!');
+                AttackAI();
+                return;
+                }
+        }
+        else if (userField[xAttackAI][yAttackAI].shipIsHere==3 && userField[xAttackAI][yAttackAI].numberOfThisTypeShip==1) {
+            if (Desk3Ship1HealthUser==3) {
+            userField[xAttackAI][yAttackAI].classList.add('crackShip');
+            userField[xAttackAI][yAttackAI].labelShooting=true;
+            shootingXY[0][6]=xAttackAI;
+            shootingXY[1][6]=yAttackAI;
+            Desk3Ship1HealthUser=2;
+            alert ('В ваш корабль попали!');
+            AI();
+            return;
+            }
+            else if (Desk3Ship1HealthUser==2) {
+                userField[xAttackAI][yAttackAI].classList.add('crackShip');
+                userField[xAttackAI][yAttackAI].labelShooting=true;
+                shootingXY[0][7]=xAttackAI;
+                shootingXY[1][7]=yAttackAI;
+                Desk3Ship1HealthUser=1;
+                alert ('В ваш корабль попали!');
+                AI();
+                return;
+                }
+            else if (Desk3Ship1HealthUser==1) {
+                shootingXY[0][8]=xAttackAI;
+                shootingXY[1][8]=yAttackAI;
+                userField[xAttackAI][yAttackAI].classList.add('crackShip');
+                intShootingLabelAI(shootingXY[0][6],shootingXY[1][6]);
+                intShootingLabelAI(shootingXY[0][7],shootingXY[1][7]);
+                intShootingLabelAI(shootingXY[0][8],shootingXY[1][8]);
+                userField[shootingXY[0][6]][shootingXY[1][6]].classList.remove('FailShot');
+                userField[shootingXY[0][7]][shootingXY[1][7]].classList.remove('FailShot');
+                userField[shootingXY[0][8]][shootingXY[1][8]].classList.remove('FailShot');
+                Desk3Ship1HealthUser=0;
+                needToShootToShip = false;
+                alert ('Ваш трёхпалубный корабль потопили!');
+                AttackAI();
+                return;
+                }
+        }
+        else if (userField[xAttackAI][yAttackAI].shipIsHere==3 && userField[xAttackAI][yAttackAI].numberOfThisTypeShip==2) {
+            if (Desk3Ship2HealthUser==3) {
+            userField[xAttackAI][yAttackAI].classList.add('crackShip');
+            userField[xAttackAI][yAttackAI].labelShooting=true;
+            shootingXY[0][9]=xAttackAI;
+            shootingXY[1][9]=yAttackAI;
+            Desk3Ship2HealthUser=2;
+            alert ('В ваш корабль попали!');
+            AI();
+            return;
+            }
+            else if (Desk3Ship2HealthUser==2) {
+                userField[xAttackAI][yAttackAI].classList.add('crackShip');
+                userField[xAttackAI][yAttackAI].labelShooting=true;
+                shootingXY[0][10]=xAttackAI;
+                shootingXY[1][10]=yAttackAI;
+                Desk3Ship2HealthUser=1;
+                alert ('В ваш корабль попали!');
+                AI();
+                return;
+                }
+            else if (Desk3Ship2HealthUser==1) {
+                shootingXY[0][11]=xAttackAI;
+                shootingXY[1][11]=yAttackAI;
+                userField[xAttackAI][yAttackAI].classList.add('crackShip');
+                intShootingLabelAI(shootingXY[0][9],shootingXY[1][9]);
+                intShootingLabelAI(shootingXY[0][10],shootingXY[1][10]);
+                intShootingLabelAI(shootingXY[0][11],shootingXY[1][11]);
+                userField[shootingXY[0][9]][shootingXY[1][9]].classList.remove('FailShot');
+                userField[shootingXY[0][10]][shootingXY[1][10]].classList.remove('FailShot');
+                userField[shootingXY[0][11]][shootingXY[1][11]].classList.remove('FailShot');
+                Desk3Ship2HealthUser=0;
+                needToShootToShip = false;
+                alert ('Ваш трёхпалубный корабль потопили!');
+                AttackAI();
+                return;
+                }
+        }
+        else if (userField[xAttackAI][yAttackAI].shipIsHere==4) {
+            if (Desk4Ship1HealthUser==4) {
+            userField[xAttackAI][yAttackAI].classList.add('crackShip');
+            userField[xAttackAI][yAttackAI].labelShooting=true;
+            shootingXY[0][12]=xAttackAI;
+            shootingXY[1][12]=yAttackAI;
+            Desk4Ship1HealthUser=3;
+            alert ('В ваш корабль попали!');
+            AI();
+            return;
+            }
+            else if (Desk4Ship1HealthUser==3) {
+                userField[xAttackAI][yAttackAI].classList.add('crackShip');
+                userField[xAttackAI][yAttackAI].labelShooting=true;
+                shootingXY[0][13]=xAttackAI;
+                shootingXY[1][13]=yAttackAI;
+                Desk4Ship1HealthUser=2;
+                alert ('В ваш корабль попали!');
+                AI();
+                return;
+                }
+            else if (Desk4Ship1HealthUser==2) {
+                userField[xAttackAI][yAttackAI].classList.add('crackShip');
+                userField[xAttackAI][yAttackAI].labelShooting=true;
+                shootingXY[0][14]=xAttackAI;
+                shootingXY[1][14]=yAttackAI;
+                Desk4Ship1HealthUser=1;
+                alert ('В ваш корабль попали!');
+                AI();
+                return;
+                    }
+            else if (Desk4Ship1HealthUser==1) {
+                shootingXY[0][15]=xAttackAI;
+                shootingXY[1][15]=yAttackAI;
+                userField[xAttackAI][yAttackAI].classList.add('crackShip');
+                intShootingLabelAI(shootingXY[0][12],shootingXY[1][12]);
+                intShootingLabelAI(shootingXY[0][13],shootingXY[1][13]);
+                intShootingLabelAI(shootingXY[0][14],shootingXY[1][14]);
+                intShootingLabelAI(shootingXY[0][15],shootingXY[1][15]);
+                userField[shootingXY[0][12]][shootingXY[1][12]].classList.remove('FailShot');
+                userField[shootingXY[0][13]][shootingXY[1][13]].classList.remove('FailShot');
+                userField[shootingXY[0][14]][shootingXY[1][14]].classList.remove('FailShot');
+                userField[shootingXY[0][15]][shootingXY[1][15]].classList.remove('FailShot');
+                Desk4Ship1HealthUser=0;
+                needToShootToShip = false;
+                alert ('Ваш четырёхпалубный корабль потопили!');
+                AttackAI();
+                return;
+                }
+        }
+        else if (userField[xAttackAI][yAttackAI].shipIsHere==0) {
+            userField[xAttackAI][yAttackAI].labelShooting=true;
+            userField[xAttackAI][yAttackAI].classList.add('FailShot');
+            alert ('В Вас не попали!');
+            needToShootToShip=false;
+            AttackUser();
+            return;
+        }
+    
+    }
+
+}
+
+
