@@ -535,40 +535,7 @@ buttonShip3.addEventListener('click', addShip3 );
 buttonShip2.addEventListener('click', addShip2 );
 buttonShip1.addEventListener('click', addShip1 );
 
-
-
-let shipShootX1;
-let shipShootX2;
-let shipShootX3;
-let shipShootX4;
-let shipShootX5;
-let shipShootX6;
-let shipShootX7;
-let shipShootX8;
-let shipShootX9;
-let shipShootX10;
-let shipShootX11;
-let shipShootX12;
-let shipShootX13;
-let shipShootX14;
-let shipShootX15;
-let shipShootX16;
-let shipShootY1;
-let shipShootY2;
-let shipShootY3;
-let shipShootY4;
-let shipShootY5;
-let shipShootY6;
-let shipShootY7;
-let shipShootY8;
-let shipShootY9;
-let shipShootY10;
-let shipShootY11;
-let shipShootY12;
-let shipShootY13;
-let shipShootY14;
-let shipShootY15;
-let shipShootY16;
+let shootingXYUser = [[],[]];
 
 
 let Desk2Ship1Health=2;
@@ -596,10 +563,24 @@ if (addEventListenerForAIField==false) {
 addEventListenerForAIField=true;
 }
 
+
+
 function AttackUserInt() {
-    if (field[i1][j1].labelShooting==false){AttackUserCheckAndPlace();}
+    if (field[i1][j1].labelShooting==false){
+        AttackUserCheckAndPlace();
+    }
     function AttackUserCheckAndPlace() {
         
+        function eventListnerRemover() {
+            for (let i=0;i<=9;i++) {
+                for (let j=0;j<=9;j++) {
+                    field[i][j].removeEventListener("click",AttackUserInt);
+            }
+        }
+        addEventListenerForAIField=false;
+        }
+        eventListnerRemover();
+
     
     if (field[i1][j1].shipIsHere==1) {
         intShootingLabel (i1,j1);
@@ -613,8 +594,8 @@ function AttackUserInt() {
     else if (field[i1][j1].shipIsHere==2 && field[i1][j1].numberOfThisTypeShip==2) {
         
         if (Desk2Ship1Health == 2) {
-        shipShootX1=i1;
-        shipShootY1=j1;
+        shootingXYUser[0][0]=i1;
+        shootingXYUser[1][0]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
         alert ('Вы попали!');
@@ -622,14 +603,14 @@ function AttackUserInt() {
         AttackUser();
         }
         else if (Desk2Ship1Health == 1) {
-        shipShootX2=i1;
-        shipShootY2=j1;
+        shootingXYUser[0][1]=i1;
+        shootingXYUser[1][1]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
-        intShootingLabel(shipShootX1,shipShootY1);
-        intShootingLabel(shipShootX2,shipShootY2);
-        field[shipShootX1][shipShootY1].classList.remove('FailShot');
-        field[shipShootX2][shipShootY2].classList.remove('FailShot');
+        intShootingLabel(shootingXYUser[0][0],shootingXYUser[1][0]);
+        intShootingLabel(shootingXYUser[0][1],shootingXYUser[1][1]);
+        field[shootingXYUser[0][0]][shootingXYUser[1][0]].classList.remove('FailShot');
+        field[shootingXYUser[0][1]][shootingXYUser[1][1]].classList.remove('FailShot');
         Desk2Ship1Health=0;
         alert('Вы потопили двухпалубный корабль!');
         AttackUser();
@@ -638,8 +619,8 @@ function AttackUserInt() {
     else if (field[i1][j1].shipIsHere==2 && field[i1][j1].numberOfThisTypeShip==1) {
         
         if (Desk2Ship2Health == 2) {
-        shipShootX3=i1;
-        shipShootY3=j1;
+        shootingXYUser[0][2]=i1;
+        shootingXYUser[1][2]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
         alert ('Вы попали!');
@@ -647,14 +628,14 @@ function AttackUserInt() {
         AttackUser();
         }
         else if (Desk2Ship2Health == 1) {
-        shipShootX4=i1;
-        shipShootY4=j1;
+        shootingXYUser[0][3]=i1;
+        shootingXYUser[1][3]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
-        intShootingLabel(shipShootX3,shipShootY3);
-        intShootingLabel(shipShootX4,shipShootY4);
-        field[shipShootX3][shipShootY3].classList.remove('FailShot');
-        field[shipShootX4][shipShootY4].classList.remove('FailShot');
+        intShootingLabel(shootingXYUser[0][2],shootingXYUser[1][2]);
+        intShootingLabel(shootingXYUser[0][3],shootingXYUser[1][3]);
+        field[shootingXYUser[0][2]][shootingXYUser[1][2]].classList.remove('FailShot');
+        field[shootingXYUser[0][3]][shootingXYUser[1][3]].classList.remove('FailShot');
         Desk2Ship2Health=0;
         alert('Вы потопили двухпалубный корабль!');
         AttackUser();
@@ -663,8 +644,8 @@ function AttackUserInt() {
     else if (field[i1][j1].shipIsHere==2 && field[i1][j1].numberOfThisTypeShip==3) {
         
         if (Desk2Ship3Health == 2) {
-        shipShootX5=i1;
-        shipShootY5=j1;
+        shootingXYUser[0][4]=i1;
+        shootingXYUser[1][4]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
         alert ('Вы попали!');
@@ -672,14 +653,14 @@ function AttackUserInt() {
         AttackUser();
         }
         else if (Desk2Ship3Health == 1) {
-        shipShootX6=i1;
-        shipShootY6=j1;
+        shootingXYUser[0][5]=i1;
+        shootingXYUser[1][5]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
-        intShootingLabel(shipShootX5,shipShootY5);
-        intShootingLabel(shipShootX6,shipShootY6);
-        field[shipShootX5][shipShootY5].classList.remove('FailShot');
-        field[shipShootX6][shipShootY6].classList.remove('FailShot');
+        intShootingLabel(shootingXYUser[0][4],shootingXYUser[1][4]);
+        intShootingLabel(shootingXYUser[0][5],shootingXYUser[1][5]);
+        field[shootingXYUser[0][4]][shootingXYUser[1][4]].classList.remove('FailShot');
+        field[shootingXYUser[0][5]][shootingXYUser[1][5]].classList.remove('FailShot');
         Desk2Ship3Health=0;
         alert('Вы потопили двухпалубный корабль!');
         AttackUser();
@@ -688,8 +669,8 @@ function AttackUserInt() {
     else if (field[i1][j1].shipIsHere==3 && field[i1][j1].numberOfThisTypeShip==2) {
         
         if (Desk3Ship1Health == 3) {
-        shipShootX7=i1;
-        shipShootY7=j1;
+        shootingXYUser[0][6]=i1;
+        shootingXYUser[1][6]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
         alert ('Вы попали!');
@@ -697,8 +678,8 @@ function AttackUserInt() {
         AttackUser();
         }
         else if (Desk3Ship1Health == 2) {
-            shipShootX8=i1;
-            shipShootY8=j1;
+            shootingXYUser[0][7]=i1;
+            shootingXYUser[1][7]=j1;
             field[i1][j1].classList.add('crackShip');
             field[i1][j1].labelShooting=true;
             alert ('Вы попали!');
@@ -706,16 +687,16 @@ function AttackUserInt() {
             AttackUser();
             }
         else if (Desk3Ship1Health == 1) {
-        shipShootX9=i1;
-        shipShootY9=j1;
+        shootingXYUser[0][8]=i1;
+        shootingXYUser[1][8]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
-        intShootingLabel(shipShootX7,shipShootY7);
-        intShootingLabel(shipShootX8,shipShootY8);
-        intShootingLabel(shipShootX9,shipShootY9);
-        field[shipShootX7][shipShootY7].classList.remove('FailShot');
-        field[shipShootX8][shipShootY8].classList.remove('FailShot');
-        field[shipShootX9][shipShootY9].classList.remove('FailShot');
+        intShootingLabel(shootingXYUser[0][6],shootingXYUser[1][6]);
+        intShootingLabel(shootingXYUser[0][7],shootingXYUser[1][7]);
+        intShootingLabel(shootingXYUser[0][8],shootingXYUser[1][8]);
+        field[shootingXYUser[0][6]][shootingXYUser[1][6]].classList.remove('FailShot');
+        field[shootingXYUser[0][7]][shootingXYUser[1][7]].classList.remove('FailShot');
+        field[shootingXYUser[0][8]][shootingXYUser[1][8]].classList.remove('FailShot');
         Desk3Ship1Health=0;
         alert('Вы потопили трёхпалубный корабль!');
         AttackUser();
@@ -724,8 +705,8 @@ function AttackUserInt() {
     else if (field[i1][j1].shipIsHere==3 && field[i1][j1].numberOfThisTypeShip==1) {
         
         if (Desk3Ship2Health == 3) {
-        shipShootX10=i1;
-        shipShootY10=j1;
+        shootingXYUser[0][9]=i1;
+        shootingXYUser[1][9]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
         alert ('Вы попали!');
@@ -733,8 +714,8 @@ function AttackUserInt() {
         AttackUser();
         }
         else if (Desk3Ship2Health == 2) {
-            shipShootX11=i1;
-            shipShootY11=j1;
+            shootingXYUser[0][10]=i1;
+            shootingXYUser[1][10]=j1;
             field[i1][j1].classList.add('crackShip');
             field[i1][j1].labelShooting=true;
             alert ('Вы попали!');
@@ -742,16 +723,16 @@ function AttackUserInt() {
             AttackUser();
             }
         else if (Desk3Ship2Health == 1) {
-        shipShootX12=i1;
-        shipShootY12=j1;
+        shootingXYUser[0][11]=i1;
+        shootingXYUser[1][11]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
-        intShootingLabel(shipShootX10,shipShootY10);
-        intShootingLabel(shipShootX11,shipShootY11);
-        intShootingLabel(shipShootX12,shipShootY12);
-        field[shipShootX10][shipShootY10].classList.remove('FailShot');
-        field[shipShootX11][shipShootY11].classList.remove('FailShot');
-        field[shipShootX12][shipShootY12].classList.remove('FailShot');
+        intShootingLabel(shootingXYUser[0][9],shootingXYUser[1][9]);
+        intShootingLabel(shootingXYUser[0][10],shootingXYUser[1][10]);
+        intShootingLabel(shootingXYUser[0][11],shootingXYUser[1][11]);
+        field[shootingXYUser[0][9]][shootingXYUser[1][9]].classList.remove('FailShot');
+        field[shootingXYUser[0][10]][shootingXYUser[1][10]].classList.remove('FailShot');
+        field[shootingXYUser[0][11]][shootingXYUser[1][11]].classList.remove('FailShot');
         Desk3Ship2Health=0;
         alert('Вы потопили трёхпалубный корабль!');
         AttackUser();
@@ -759,8 +740,8 @@ function AttackUserInt() {
     }
     else if (field[i1][j1].shipIsHere==4) {
         if (Desk4Ship1Health==4) {
-            shipShootX13=i1;
-            shipShootY13=j1;
+            shootingXYUser[0][12]=i1;
+            shootingXYUser[1][12]=j1;
             field[i1][j1].classList.add('crackShip');
             field[i1][j1].labelShooting=true;
             alert ('Вы попали!');
@@ -768,8 +749,8 @@ function AttackUserInt() {
             AttackUser();
         }
         else if (Desk4Ship1Health==3) {
-            shipShootX14=i1;
-            shipShootY14=j1;
+            shootingXYUser[0][13]=i1;
+            shootingXYUser[1][13]=j1;
             field[i1][j1].classList.add('crackShip');
             field[i1][j1].labelShooting=true;
             alert ('Вы попали!');
@@ -777,8 +758,8 @@ function AttackUserInt() {
             AttackUser();
         }
         else if (Desk4Ship1Health==2) {
-            shipShootX15=i1;
-            shipShootY15=j1;
+            shootingXYUser[0][14]=i1;
+            shootingXYUser[1][14]=j1;
             field[i1][j1].classList.add('crackShip');
             field[i1][j1].labelShooting=true;
             alert ('Вы попали!');
@@ -786,18 +767,18 @@ function AttackUserInt() {
             AttackUser();
         }
         else if (Desk4Ship1Health==1) {
-            shipShootX16=i1;
-            shipShootY16=j1;
+            shootingXYUser[0][15]=i1;
+            shootingXYUser[1][15]=j1;
             field[i1][j1].classList.add('crackShip');
             field[i1][j1].labelShooting=true;
-            intShootingLabel(shipShootX13,shipShootY13);
-            intShootingLabel(shipShootX14,shipShootY14);
-            intShootingLabel(shipShootX15,shipShootY15);
-            intShootingLabel(shipShootX16,shipShootY16);
-            field[shipShootX13][shipShootY13].classList.remove('FailShot');
-            field[shipShootX14][shipShootY14].classList.remove('FailShot');
-            field[shipShootX15][shipShootY15].classList.remove('FailShot');
-            field[shipShootX16][shipShootY16].classList.remove('FailShot');
+            intShootingLabel(shootingXYUser[0][12],shootingXYUser[1][12]);
+            intShootingLabel(shootingXYUser[0][13],shootingXYUser[1][13]);
+            intShootingLabel(shootingXYUser[0][14],shootingXYUser[1][14]);
+            intShootingLabel(shootingXYUser[0][15],shootingXYUser[1][15]);
+            field[shootingXYUser[0][12]][shootingXYUser[1][12]].classList.remove('FailShot');
+            field[shootingXYUser[0][13]][shootingXYUser[1][13]].classList.remove('FailShot');
+            field[shootingXYUser[0][14]][shootingXYUser[1][14]].classList.remove('FailShot');
+            field[shootingXYUser[0][15]][shootingXYUser[1][15]].classList.remove('FailShot');
             Desk4Ship1Health=0;
             alert('Вы потопили четырёхпалубный корабль!');
             AttackUser();
@@ -878,7 +859,18 @@ function intShootingLabel(i,j) {
      let shootingXY = [[],[]];
 
      let needToShootToShip = false;
-    function AttackAI() {
+
+     let needToShootToShipSecond = false;
+
+     let xCrackedShip1;
+     let yCrackedShip1;
+     let xCrackedShip2;
+     let yCrackedShip2;
+
+    let tempX;
+    let tempY;
+
+function AttackAI() {
 
 
 function getXY() {
@@ -895,7 +887,10 @@ function getXY() {
 
 function AI() {
     needToShootToShip = true;
+    if (needToShootToShipSecond == false) {
     let shootToDirection = getRandom(0,3);
+    xCrackedShip1 = xAttackAI;
+    yCrackedShip1 = yAttackAI;
     if (shootToDirection == 0 && (xAttackAI+1)<=9) {
         xAttackAI=xAttackAI+1;
         checkByLabelShootingAI();
@@ -917,28 +912,92 @@ function AI() {
         return;
     }
     else {
-        needToShootToShip=false;
+        xAttackAI=xCrackedShip1;
+        yAttackAI=yCrackedShip1;
         AttackAI();
         return;
     }
+}
+else if (needToShootToShipSecond == true) {
+    xCrackedShip2 = xAttackAI;
+    yCrackedShip2 = yAttackAI;
+    if (xCrackedShip1-xCrackedShip2==0 && ((userField[xCrackedShip2][yCrackedShip2+1] && userField[xCrackedShip2][yCrackedShip2+1].labelShooting == false && userField[xCrackedShip2][yCrackedShip2-1]) || (userField[xCrackedShip2][yCrackedShip2-1] && userField[xCrackedShip2][yCrackedShip2-1].labelShooting == false && userField[xCrackedShip2][yCrackedShip2+1]))) {
+        let shootToDirectionY = getRandom (0,1);
+            if (shootToDirectionY == 0 && (yCrackedShip2+1)<=9) {
+                yAttackAI = yCrackedShip2+1;
+                checkByLabelShootingAI();
+                return;
+            }
+            else if (shootToDirectionY == 1 && (yCrackedShip2-1)>=0) {
+                yAttackAI = yCrackedShip2-1;
+                checkByLabelShootingAI();
+                return;
+            }
+            else {
+                yAttackAI = yCrackedShip2;
+                AttackAI();
+                return;
+            }
+    }
+    else if (yCrackedShip1-yCrackedShip2==0 && ((userField[xCrackedShip2+1][yCrackedShip2] && userField[xCrackedShip2+1][yCrackedShip2].labelShooting == false && userField[xCrackedShip2-1][yCrackedShip2]) || (userField[xCrackedShip2-1][yCrackedShip2] && userField[xCrackedShip2-1][yCrackedShip2].labelShooting == false && userField[xCrackedShip2+1][yCrackedShip2]))) {
+        let shootToDirectionX = getRandom (0,1);
+            if (shootToDirectionX == 0 && (xCrackedShip2+1)<=9) {
+                xAttackAI = xCrackedShip2+1;
+                checkByLabelShootingAI();
+                return;
+            }
+            else if (shootToDirectionX == 1 && (xCrackedShip2-1)>=0) {
+                xAttackAI = xCrackedShip2-1;
+                checkByLabelShootingAI();
+                return;
+            }
+            else {
+                xAttackAI = xCrackedShip2;
+                AttackAI();
+                return;
+            }
+    }
+    else {
+        tempX = xCrackedShip2;
+        tempY = yCrackedShip2;
+        xCrackedShip2 = xCrackedShip1;
+        yCrackedShip2 = yCrackedShip1;
+        xCrackedShip1 = tempX;
+        yCrackedShip1 = tempY;
+        xAttackAI = xCrackedShip2;
+        yAttackAI = yCrackedShip2;
+        AttackAI ();
+        return;
+    }
+
+}
     }   
     
 
 
 
-        function checkByLabelShootingAI() {
-            if (userField[xAttackAI][yAttackAI].labelShooting == false) {
-                AttackAIInt();
-                return;
+function checkByLabelShootingAI() {
+    if (userField[xAttackAI][yAttackAI].labelShooting == false) {
+        setTimeout (AttackAIInt,500);
+        return;
+    }
+    else if (userField[xAttackAI][yAttackAI].labelShooting == true) {
+        {
+            if (needToShootToShip == true && needToShootToShipSecond == false) {
+            xAttackAI = xCrackedShip1;
+            yAttackAI = yCrackedShip1;
             }
-            else if (userField[xAttackAI][yAttackAI].labelShooting == true) {
-                {
-                    AttackAI();
-                    return;
+            else if (needToShootToShip == true && needToShootToShipSecond == true) {
+                xAttackAI = xCrackedShip2;
+                yAttackAI = yCrackedShip2;
+            }
+
+            AttackAI();
+            return;
               
-            }
+        }
         }}
-        getXY ();
+    getXY ();
 
 
         function AttackAIInt() { 
@@ -949,6 +1008,7 @@ function AI() {
             userField[xAttackAI][yAttackAI].classList.remove('FailShot');
             alert ('Ваш однопалубный корабль потопили!');
             needToShootToShip=false;
+            needToShootToShipSecond = false;
             AttackAI();
             return;
         }
@@ -967,12 +1027,8 @@ function AI() {
                 shootingXY[0][1]=xAttackAI;
                 shootingXY[1][1]=yAttackAI;
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
-                intShootingLabelAI(shootingXY[0][0],shootingXY[1][0]);
-                intShootingLabelAI(shootingXY[0][1],shootingXY[1][1]);
-                userField[shootingXY[0][0]][shootingXY[1][0]].classList.remove('FailShot');
-                userField[shootingXY[0][1]][shootingXY[1][1]].classList.remove('FailShot');
+                killShip (2,shootingXY[0][0],shootingXY[1][0],shootingXY[0][1],shootingXY[1][1],0,0,0,0);
                 Desk2Ship1HealthUser=0;
-                needToShootToShip = false;
                 alert ('Ваш двухпалубный корабль потопили!');
                 AttackAI();
                 return;
@@ -993,12 +1049,8 @@ function AI() {
                 shootingXY[0][3]=xAttackAI;
                 shootingXY[1][3]=yAttackAI;
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
-                intShootingLabelAI(shootingXY[0][2],shootingXY[1][2]);
-                intShootingLabelAI(shootingXY[0][3],shootingXY[1][3]);
-                userField[shootingXY[0][2]][shootingXY[1][2]].classList.remove('FailShot');
-                userField[shootingXY[0][3]][shootingXY[1][3]].classList.remove('FailShot');
+                killShip (2,shootingXY[0][2],shootingXY[1][2],shootingXY[0][3],shootingXY[1][3],0,0,0,0);
                 Desk2Ship2HealthUser=0;
-                needToShootToShip = false;
                 alert ('Ваш двухпалубный корабль потопили!');
                 AttackAI();
                 return;
@@ -1019,12 +1071,8 @@ function AI() {
                 shootingXY[0][5]=xAttackAI;
                 shootingXY[1][5]=yAttackAI;
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
-                intShootingLabelAI(shootingXY[0][4],shootingXY[1][4]);
-                intShootingLabelAI(shootingXY[0][5],shootingXY[1][5]);
-                userField[shootingXY[0][4]][shootingXY[1][4]].classList.remove('FailShot');
-                userField[shootingXY[0][5]][shootingXY[1][5]].classList.remove('FailShot');
+                killShip (2,shootingXY[0][4],shootingXY[1][4],shootingXY[0][5],shootingXY[1][5],0,0,0,0);
                 Desk2Ship3HealthUser=0;
-                needToShootToShip = false;
                 alert ('Ваш двухпалубный корабль потопили!');
                 AttackAI();
                 return;
@@ -1047,6 +1095,7 @@ function AI() {
                 shootingXY[0][7]=xAttackAI;
                 shootingXY[1][7]=yAttackAI;
                 Desk3Ship1HealthUser=1;
+                needToShootToShipSecond = true;
                 alert ('В ваш корабль попали!');
                 AI();
                 return;
@@ -1055,14 +1104,8 @@ function AI() {
                 shootingXY[0][8]=xAttackAI;
                 shootingXY[1][8]=yAttackAI;
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
-                intShootingLabelAI(shootingXY[0][6],shootingXY[1][6]);
-                intShootingLabelAI(shootingXY[0][7],shootingXY[1][7]);
-                intShootingLabelAI(shootingXY[0][8],shootingXY[1][8]);
-                userField[shootingXY[0][6]][shootingXY[1][6]].classList.remove('FailShot');
-                userField[shootingXY[0][7]][shootingXY[1][7]].classList.remove('FailShot');
-                userField[shootingXY[0][8]][shootingXY[1][8]].classList.remove('FailShot');
+                killShip (3,shootingXY[0][6],shootingXY[1][6],shootingXY[0][7],shootingXY[1][7],shootingXY[0][8],shootingXY[1][8],0,0);
                 Desk3Ship1HealthUser=0;
-                needToShootToShip = false;
                 alert ('Ваш трёхпалубный корабль потопили!');
                 AttackAI();
                 return;
@@ -1085,6 +1128,7 @@ function AI() {
                 shootingXY[0][10]=xAttackAI;
                 shootingXY[1][10]=yAttackAI;
                 Desk3Ship2HealthUser=1;
+                needToShootToShipSecond = true;
                 alert ('В ваш корабль попали!');
                 AI();
                 return;
@@ -1093,14 +1137,8 @@ function AI() {
                 shootingXY[0][11]=xAttackAI;
                 shootingXY[1][11]=yAttackAI;
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
-                intShootingLabelAI(shootingXY[0][9],shootingXY[1][9]);
-                intShootingLabelAI(shootingXY[0][10],shootingXY[1][10]);
-                intShootingLabelAI(shootingXY[0][11],shootingXY[1][11]);
-                userField[shootingXY[0][9]][shootingXY[1][9]].classList.remove('FailShot');
-                userField[shootingXY[0][10]][shootingXY[1][10]].classList.remove('FailShot');
-                userField[shootingXY[0][11]][shootingXY[1][11]].classList.remove('FailShot');
+                killShip (3,shootingXY[0][9],shootingXY[1][9],shootingXY[0][10],shootingXY[1][10],shootingXY[0][11],shootingXY[1][11],0,0);
                 Desk3Ship2HealthUser=0;
-                needToShootToShip = false;
                 alert ('Ваш трёхпалубный корабль потопили!');
                 AttackAI();
                 return;
@@ -1123,6 +1161,7 @@ function AI() {
                 shootingXY[0][13]=xAttackAI;
                 shootingXY[1][13]=yAttackAI;
                 Desk4Ship1HealthUser=2;
+                needToShootToShipSecond = true;
                 alert ('В ваш корабль попали!');
                 AI();
                 return;
@@ -1133,6 +1172,7 @@ function AI() {
                 shootingXY[0][14]=xAttackAI;
                 shootingXY[1][14]=yAttackAI;
                 Desk4Ship1HealthUser=1;
+                needToShootToShipSecond = true;
                 alert ('В ваш корабль попали!');
                 AI();
                 return;
@@ -1141,16 +1181,8 @@ function AI() {
                 shootingXY[0][15]=xAttackAI;
                 shootingXY[1][15]=yAttackAI;
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
-                intShootingLabelAI(shootingXY[0][12],shootingXY[1][12]);
-                intShootingLabelAI(shootingXY[0][13],shootingXY[1][13]);
-                intShootingLabelAI(shootingXY[0][14],shootingXY[1][14]);
-                intShootingLabelAI(shootingXY[0][15],shootingXY[1][15]);
-                userField[shootingXY[0][12]][shootingXY[1][12]].classList.remove('FailShot');
-                userField[shootingXY[0][13]][shootingXY[1][13]].classList.remove('FailShot');
-                userField[shootingXY[0][14]][shootingXY[1][14]].classList.remove('FailShot');
-                userField[shootingXY[0][15]][shootingXY[1][15]].classList.remove('FailShot');
+                killShip (4,shootingXY[0][12],shootingXY[1][12],shootingXY[0][13],shootingXY[1][13],shootingXY[0][14],shootingXY[1][14],shootingXY[0][15],shootingXY[1][15]);
                 Desk4Ship1HealthUser=0;
-                needToShootToShip = false;
                 alert ('Ваш четырёхпалубный корабль потопили!');
                 AttackAI();
                 return;
@@ -1160,7 +1192,14 @@ function AI() {
             userField[xAttackAI][yAttackAI].labelShooting=true;
             userField[xAttackAI][yAttackAI].classList.add('FailShot');
             alert ('В Вас не попали!');
-            needToShootToShip=false;
+            if (needToShootToShip == true && needToShootToShipSecond == false) {
+                xAttackAI=xCrackedShip1;
+                yAttackAI=yCrackedShip1;
+            }
+            else if (needToShootToShip == true && needToShootToShipSecond == true) {
+                xAttackAI=xCrackedShip2;
+                yAttackAI=yCrackedShip2;
+            } 
             AttackUser();
             return;
         }
@@ -1170,3 +1209,24 @@ function AI() {
 }
 
 
+function killShip(deskShip,x1,y1,x2,y2,x3,y3,x4,y4) {
+    intShootingLabelAI(x1,y1);
+    intShootingLabelAI(x2,y2);
+    userField[x1][y1].classList.remove('FailShot');
+    userField[x2][y2].classList.remove('FailShot');
+    if (deskShip>2) {
+        intShootingLabelAI(x3,y3);
+        userField[x1][y1].classList.remove('FailShot');
+        userField[x2][y2].classList.remove('FailShot');
+        userField[x3][y3].classList.remove('FailShot');
+        if (deskShip>3){
+            intShootingLabelAI(x4,y4);
+            userField[x1][y1].classList.remove('FailShot');
+            userField[x2][y2].classList.remove('FailShot');
+            userField[x3][y3].classList.remove('FailShot');
+            userField[x4][y4].classList.remove('FailShot');
+        }
+    }
+    needToShootToShip = false;
+    needToShootToShipSecond = false;
+}
