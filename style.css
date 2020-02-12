@@ -1,3 +1,13 @@
+.leftFieldText {
+    color: blue;
+    text-align: center;
+    font-size: 36px;
+}
+.rigthFieldText {
+    font-size: 36px;
+    color: blue;
+    text-align: center;
+}
 .string {
     background-color: white;
     display: flex;
@@ -106,4 +116,12 @@
 }
 .FailShot {
     background-color: skyblue;
+}
+@media (max-width: 744px) {
+    .container {
+    flex-direction: column ;
+    }
+}
+.hover {
+    background-color: cornflowerblue;
 }

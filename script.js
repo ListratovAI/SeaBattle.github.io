@@ -1,8 +1,42 @@
+let container = document.createElement("div");
+
+SEA_BATTLE_GAME();
+
+function SEA_BATTLE_GAME() {
+let leftField = document.createElement("div");
+let rightField = document.createElement("div");
+let leftFieldText = document.createElement("div");
+let rigthFieldText = document.createElement("div");
+let containerForGame = document.createElement("div");
+let containerForUserField = document.createElement("div");
+
+container.classList.add("container");
+leftField.classList.add("leftField");
+rightField.classList.add("rightField");
+leftFieldText.classList.add("leftFieldText");
+rigthFieldText.classList.add("rigthFieldText");
+containerForGame.classList.add("containerForGame");
+containerForUserField.classList.add("containerForUserField");
+
+document.body.appendChild(container);
+container.appendChild(leftField);
+container.appendChild(rightField);
+leftField.appendChild(leftFieldText);
+leftField.appendChild(containerForGame);
+rightField.appendChild(rigthFieldText);
+rightField.appendChild(containerForUserField);
+
+
+leftFieldText.innerHTML = "<p>Поле противника</p>";
+rigthFieldText.innerHTML = "<p>Ваше поле</p>";
+
+
+
 //создание игрового поля
 
 let field = [[],[],[],[],[],[],[],[],[],[]];
 let userField = [[],[],[],[],[],[],[],[],[],[]];
-let containerForGame = document.querySelector(".containerForGame");
+//let containerForGame = document.querySelector(".containerForGame");
 
 
 
@@ -146,6 +180,7 @@ function autoPlasingInt() {
 }
 
 }
+console.time("autoplasing");
 autoPlasing(4,1); 
 autoPlasing(3,1); 
 autoPlasing(3,2); 
@@ -156,25 +191,26 @@ autoPlasing(1,4);
 autoPlasing(1,3); 
 autoPlasing(1,2); 
 autoPlasing(1,1);
+console.timeEnd("autoplasing");
 //функция для создания метки (чтоб корабль не ставился)
 function intLabel(i,j) {
 field[i][j].label = true;
 try {field[i+1][j].label = true;} 
-catch (a) {console.log ("не поставилось");}
+catch (a) {}
 try {field[i+1][j+1].label = true;} 
-catch (a) {console.log ("не поставилось");}
+catch (a) {}
 try {field[i+1][j-1].label = true;}
-catch (a) {console.log ("не поставилось");}
+catch (a) {}
 try {field[i][j+1].label = true;} 
-catch (a) {console.log ("не поставилось");}
+catch (a) {}
 try {field[i][j-1].label = true;}
-catch (a) {console.log ("не поставилось");}
+catch (a) {}
 try {field[i-1][j].label = true;}
-catch (a) {console.log ("не поставилось");}
+catch (a) {}
 try {field[i-1][j+1].label = true;}
-catch (a) {console.log ("не поставилось");}
+catch (a) {}
 try {field[i-1][j-1].label = true;}
-catch (a) {console.log ("не поставилось");}
+catch (a) {}
 }
 
 function intLabelUser(i,j) {
@@ -199,7 +235,7 @@ function intLabelUser(i,j) {
 
 
 //Создаём поле пользователя
-let containerForUserField = document.querySelector(".containerForUserField");
+//let containerForUserField = document.querySelector(".containerForUserField");
 function makeGameUserField(size) {
     for (let i=1; i<=size; i++) {
         makeGameUserField[`containerNum${i}`] = document.createElement('div');
@@ -306,24 +342,24 @@ if (userBad==false){
 function addShipsInt() {
 //проверка на количество установленных кораблей данного типа
         if (desk==4){
-            buttonShip4.removeEventListener('click', addShip4 );
+            buttonShip4.remove();
         }
         else if (desk==3 && counter3==1){
-            buttonShip3.removeEventListener('click', addShip3 );
+            buttonShip3.remove();
             --counter3;
         }
         else if (desk==3 && counter3!=1){
             --counter3;
         }
         else if (desk==2 && counter2==1){
-            buttonShip2.removeEventListener('click', addShip2 );
+            buttonShip2.remove();
             --counter2;
         }
         else if (desk==2 && counter2!=1){
             --counter2;
         }
         else if (desk==1 && counter1==1){
-            buttonShip1.removeEventListener('click', addShip1 );
+            buttonShip1.remove();
         }
         else if (desk==1 && counter1!=1){
             --counter1;
@@ -552,15 +588,36 @@ function AttackUser() {
 if (addEventListenerForAIField==false) {
     for (let i=0;i<=9;i++) {
         for (let j=0;j<=9;j++) {
+            field[i][j].addEventListener("mouseover", function () {
+                i1=i;
+                j1=j;
+            });
+            field[i][j].addEventListener("mouseover",AttackMouseIn);
+            field[i][j].addEventListener("mouseout", function () {
+                i1=i;
+                j1=j;
+            });
+            field[i][j].addEventListener("mouseout",AttackMouseOut); 
             field[i][j].addEventListener("click", function () {
                 i1=i;
                 j1=j;
                 
             });
             field[i][j].addEventListener("click",AttackUserInt);
+            
     }
 }
 addEventListenerForAIField=true;
+
+
+}
+function AttackMouseIn() {
+    if (field[i1][j1].labelShooting == false) {
+    field[i1][j1].classList.add("hover");
+    }
+}
+function AttackMouseOut() {
+    field[i1][j1].classList.remove("hover");
 }
 
 
@@ -921,7 +978,7 @@ function AI() {
 else if (needToShootToShipSecond == true) {
     xCrackedShip2 = xAttackAI;
     yCrackedShip2 = yAttackAI;
-    if (xCrackedShip1-xCrackedShip2==0 && ((userField[xCrackedShip2][yCrackedShip2+1] && userField[xCrackedShip2][yCrackedShip2+1].labelShooting == false && userField[xCrackedShip2][yCrackedShip2-1]) || (userField[xCrackedShip2][yCrackedShip2-1] && userField[xCrackedShip2][yCrackedShip2-1].labelShooting == false && userField[xCrackedShip2][yCrackedShip2+1]))) {
+    if (xCrackedShip1-xCrackedShip2==0 && ((yCrackedShip2+1<=9 && userField[xCrackedShip2][yCrackedShip2+1].labelShooting == false && yCrackedShip2-1>=0) || (yCrackedShip2-1>=0 && userField[xCrackedShip2][yCrackedShip2-1].labelShooting == false && yCrackedShip2+1<=9))) {
         let shootToDirectionY = getRandom (0,1);
             if (shootToDirectionY == 0 && (yCrackedShip2+1)<=9) {
                 yAttackAI = yCrackedShip2+1;
@@ -939,7 +996,7 @@ else if (needToShootToShipSecond == true) {
                 return;
             }
     }
-    else if (yCrackedShip1-yCrackedShip2==0 && ((userField[xCrackedShip2+1][yCrackedShip2] && userField[xCrackedShip2+1][yCrackedShip2].labelShooting == false && userField[xCrackedShip2-1][yCrackedShip2]) || (userField[xCrackedShip2-1][yCrackedShip2] && userField[xCrackedShip2-1][yCrackedShip2].labelShooting == false && userField[xCrackedShip2+1][yCrackedShip2]))) {
+    else if (yCrackedShip1-yCrackedShip2==0 && ((xCrackedShip2+1<=9 && userField[xCrackedShip2+1][yCrackedShip2].labelShooting == false && xCrackedShip2-1>=0) || (xCrackedShip2-1>=0 && userField[xCrackedShip2-1][yCrackedShip2].labelShooting == false && xCrackedShip2+1<=9))) {
         let shootToDirectionX = getRandom (0,1);
             if (shootToDirectionX == 0 && (xCrackedShip2+1)<=9) {
                 xAttackAI = xCrackedShip2+1;
@@ -1229,4 +1286,5 @@ function killShip(deskShip,x1,y1,x2,y2,x3,y3,x4,y4) {
     }
     needToShootToShip = false;
     needToShootToShipSecond = false;
+}
 }
