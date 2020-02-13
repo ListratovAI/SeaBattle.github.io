@@ -1,3 +1,24 @@
+.containerStart {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    }
+.seaBattle {
+    color: blue;
+    text-align: center;
+    font-size: 72px;
+    margin-top: 30px;
+}
+.seaBattleBottom {
+    background-color: blue;
+    text-align: center;
+    font-size: 18px;
+    color: white;
+    margin-top: 30px;
+    width: max-content;
+}
 .leftFieldText {
     color: blue;
     text-align: center;
@@ -47,32 +68,67 @@
 .ship1 {
     background-color: blue;
 }
-.test {
-    background-color: black;
-}
 .buttonShip4 {
     width: 150px;
     height: 30px;
-    margin-top: 35px;
-    background-color: tomato;
+    margin-top: 10px;
+    background-color: gold;
 }
 .buttonShip3 {
     width: 100px;
     height: 30px;
-    margin-top: 35px;
-    background-color: green;
+    margin-top: 10px;
+    background-color: gold;
 }
 .buttonShip2 {
     width: 60px;
     height: 30px;
-    margin-top: 35px;
-    background-color: darkmagenta;
+    margin-top: 10px;
+    background-color: gold;
 }
 .buttonShip1 {
     width: 30px;
     height: 30px;
-    margin-top: 35px;
+    margin-top: 10px;
     background-color: gold;
+}
+.buttomsForChange {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+ .centerField {
+    width: 100px;
+    height: 100px;
+    margin-top: 250px;
+
+} 
+.arrow {
+    width: 100%;
+}
+.arrow180 {
+    transform: rotate(180deg);
+}
+.buttomsShips {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 50%;
+    align-items: flex-end;
+} 
+.buttomAutoPlasing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: blue;
+    font-size: 20px;
+    width: 50%;
+    height: 30px;
+/*     margin-top: 50px;
+    margin-bottom: 50px; */
+    background-color: gold;
+    
+
 }
 .userShip4 {
     background-color: gold;
@@ -88,13 +144,13 @@
 }
 
 .mouseOver4 {
-    background-color: lightcoral ;
+    background-color: goldenrod ;
 }
 .mouseOver3 {
-    background-color: greenyellow;
+    background-color: goldenrod;
 }
 .mouseOver2 {
-    background-color: violet;
+    background-color: goldenrod;
 }
 .mouseOver1 {
     background-color: goldenrod;
@@ -117,9 +173,20 @@
 .FailShot {
     background-color: skyblue;
 }
-@media (max-width: 744px) {
+@media (max-width: 844px) {
     .container {
     flex-direction: column ;
+    align-items: center;
+    }
+    .centerField {
+
+        margin-top: 50px;
+    } 
+    .arrow {
+        transform: rotate(90deg);
+    }
+    .arrow180 {
+        transform: rotate(270deg);
     }
 }
 .hover {

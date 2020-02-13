@@ -1,28 +1,54 @@
 let container = document.createElement("div");
+container.classList.add("containerStart");
+document.body.appendChild(container);
 
-SEA_BATTLE_GAME();
+let seaBattle = document.createElement("div");
+seaBattle.classList.add("seaBattle");
+container.appendChild(seaBattle);
+seaBattle.innerHTML = "<p>Морской бой</p>";
+
+let seaBattleBottom = document.createElement("button");
+seaBattleBottom.classList.add("seaBattleBottom");
+container.appendChild(seaBattleBottom);
+seaBattleBottom.innerHTML = "<p>Начать бой!</p>";
+
+seaBattleBottom.addEventListener('click',SEA_BATTLE_GAME);
+
+//SEA_BATTLE_GAME();
 
 function SEA_BATTLE_GAME() {
+
+container.removeChild(seaBattleBottom);
+container.removeChild(seaBattle);
+
 let leftField = document.createElement("div");
+let centerField = document.createElement("div");
+let arrow = document.createElement("img");
 let rightField = document.createElement("div");
 let leftFieldText = document.createElement("div");
 let rigthFieldText = document.createElement("div");
 let containerForGame = document.createElement("div");
 let containerForUserField = document.createElement("div");
 
+container.classList.remove("containerStart");
 container.classList.add("container");
 leftField.classList.add("leftField");
+centerField.classList.add("centerField");
+arrow.classList.add("arrow");
 rightField.classList.add("rightField");
 leftFieldText.classList.add("leftFieldText");
 rigthFieldText.classList.add("rigthFieldText");
 containerForGame.classList.add("containerForGame");
 containerForUserField.classList.add("containerForUserField");
 
-document.body.appendChild(container);
+arrow.src = ("img/arrow.png");
+
 container.appendChild(leftField);
+container.appendChild(centerField);
 container.appendChild(rightField);
 leftField.appendChild(leftFieldText);
 leftField.appendChild(containerForGame);
+centerField.appendChild(arrow);
 rightField.appendChild(rigthFieldText);
 rightField.appendChild(containerForUserField);
 
@@ -256,21 +282,34 @@ makeGameUserField(10);
 
 //код для ручной расстановки кораблей
 
+let buttomsForChange = document.createElement("div");
+buttomsForChange.classList.add("buttomsForChange");
+containerForUserField.appendChild(buttomsForChange);
+
+let buttomAutoPlasing = document.createElement("button");
+buttomAutoPlasing.classList.add("buttomAutoPlasing");
+buttomsForChange.appendChild(buttomAutoPlasing);
+buttomAutoPlasing.innerHTML = "Автоматически";
+
+let buttomsShips = document.createElement("div");
+buttomsShips.classList.add("buttomsShips");
+buttomsForChange.appendChild(buttomsShips);
+
 let buttonShip4 = document.createElement('button');
 buttonShip4.classList.add('buttonShip4');
-containerForUserField.appendChild (buttonShip4);
+buttomsShips.appendChild (buttonShip4);
 
 let buttonShip3 = document.createElement('button');
 buttonShip3.classList.add('buttonShip3');
-containerForUserField.appendChild (buttonShip3);
+buttomsShips.appendChild (buttonShip3);
 
 let buttonShip2 = document.createElement('button');
 buttonShip2.classList.add('buttonShip2');
-containerForUserField.appendChild (buttonShip2);
+buttomsShips.appendChild (buttonShip2);
 
 let buttonShip1 = document.createElement('button');
 buttonShip1.classList.add('buttonShip1');
-containerForUserField.appendChild (buttonShip1);
+buttomsShips.appendChild (buttonShip1);
 
 let i1;
 let j1;
@@ -395,9 +434,7 @@ function addShipsInt() {
                 else if (desk==3) {
                 userField[i1-i][j1].numberOfThisTypeShip = counter3+1;
                 continue loop;
-                }
-                
-                
+                } 
             }
         }
     }
@@ -445,7 +482,10 @@ function addShipsInt() {
                 }
             } 
             counterShips--;
-    if (counterShips==0) {AttackAI();}
+    if (counterShips==0) {
+        AttackAI();
+        containerForUserField.removeChild(buttomsForChange);
+    }
 }
 
 }
@@ -585,6 +625,7 @@ let Desk4Ship1Health=4;
 
 //функция для атаки на вражеское поле 
 function AttackUser() {
+    arrow.classList.add("arrow180");
 if (addEventListenerForAIField==false) {
     for (let i=0;i<=9;i++) {
         for (let j=0;j<=9;j++) {
@@ -632,6 +673,8 @@ function AttackUserInt() {
             for (let i=0;i<=9;i++) {
                 for (let j=0;j<=9;j++) {
                     field[i][j].removeEventListener("click",AttackUserInt);
+                    field[i][j].removeEventListener("mouseover",AttackMouseIn);
+                    field[i][j].removeEventListener("mouseout",AttackMouseOut); 
             }
         }
         addEventListenerForAIField=false;
@@ -643,7 +686,7 @@ function AttackUserInt() {
         intShootingLabel (i1,j1);
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
-        alert ('Вы потопили однопалубный корабль!');
+        field[i1][j1].classList.remove("hover");
         AttackUser();
     }
 
@@ -655,7 +698,7 @@ function AttackUserInt() {
         shootingXYUser[1][0]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
-        alert ('Вы попали!');
+        field[i1][j1].classList.remove("hover");
         Desk2Ship1Health=1;
         AttackUser();
         }
@@ -664,12 +707,12 @@ function AttackUserInt() {
         shootingXYUser[1][1]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
+        field[i1][j1].classList.remove("hover");
         intShootingLabel(shootingXYUser[0][0],shootingXYUser[1][0]);
         intShootingLabel(shootingXYUser[0][1],shootingXYUser[1][1]);
         field[shootingXYUser[0][0]][shootingXYUser[1][0]].classList.remove('FailShot');
         field[shootingXYUser[0][1]][shootingXYUser[1][1]].classList.remove('FailShot');
         Desk2Ship1Health=0;
-        alert('Вы потопили двухпалубный корабль!');
         AttackUser();
         }
     }
@@ -680,7 +723,7 @@ function AttackUserInt() {
         shootingXYUser[1][2]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
-        alert ('Вы попали!');
+        field[i1][j1].classList.remove("hover");
         Desk2Ship2Health=1;
         AttackUser();
         }
@@ -689,12 +732,12 @@ function AttackUserInt() {
         shootingXYUser[1][3]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
+        field[i1][j1].classList.remove("hover");
         intShootingLabel(shootingXYUser[0][2],shootingXYUser[1][2]);
         intShootingLabel(shootingXYUser[0][3],shootingXYUser[1][3]);
         field[shootingXYUser[0][2]][shootingXYUser[1][2]].classList.remove('FailShot');
         field[shootingXYUser[0][3]][shootingXYUser[1][3]].classList.remove('FailShot');
         Desk2Ship2Health=0;
-        alert('Вы потопили двухпалубный корабль!');
         AttackUser();
         }
     }
@@ -705,7 +748,7 @@ function AttackUserInt() {
         shootingXYUser[1][4]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
-        alert ('Вы попали!');
+        field[i1][j1].classList.remove("hover");
         Desk2Ship3Health=1;
         AttackUser();
         }
@@ -714,12 +757,12 @@ function AttackUserInt() {
         shootingXYUser[1][5]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
+        field[i1][j1].classList.remove("hover");
         intShootingLabel(shootingXYUser[0][4],shootingXYUser[1][4]);
         intShootingLabel(shootingXYUser[0][5],shootingXYUser[1][5]);
         field[shootingXYUser[0][4]][shootingXYUser[1][4]].classList.remove('FailShot');
         field[shootingXYUser[0][5]][shootingXYUser[1][5]].classList.remove('FailShot');
         Desk2Ship3Health=0;
-        alert('Вы потопили двухпалубный корабль!');
         AttackUser();
         }
     }
@@ -730,7 +773,7 @@ function AttackUserInt() {
         shootingXYUser[1][6]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
-        alert ('Вы попали!');
+        field[i1][j1].classList.remove("hover");
         Desk3Ship1Health=2;
         AttackUser();
         }
@@ -739,7 +782,7 @@ function AttackUserInt() {
             shootingXYUser[1][7]=j1;
             field[i1][j1].classList.add('crackShip');
             field[i1][j1].labelShooting=true;
-            alert ('Вы попали!');
+            field[i1][j1].classList.remove("hover");
             Desk3Ship1Health=1;
             AttackUser();
             }
@@ -748,6 +791,7 @@ function AttackUserInt() {
         shootingXYUser[1][8]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
+        field[i1][j1].classList.remove("hover");
         intShootingLabel(shootingXYUser[0][6],shootingXYUser[1][6]);
         intShootingLabel(shootingXYUser[0][7],shootingXYUser[1][7]);
         intShootingLabel(shootingXYUser[0][8],shootingXYUser[1][8]);
@@ -755,7 +799,6 @@ function AttackUserInt() {
         field[shootingXYUser[0][7]][shootingXYUser[1][7]].classList.remove('FailShot');
         field[shootingXYUser[0][8]][shootingXYUser[1][8]].classList.remove('FailShot');
         Desk3Ship1Health=0;
-        alert('Вы потопили трёхпалубный корабль!');
         AttackUser();
         }
     }
@@ -766,7 +809,7 @@ function AttackUserInt() {
         shootingXYUser[1][9]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
-        alert ('Вы попали!');
+        field[i1][j1].classList.remove("hover");
         Desk3Ship2Health=2;
         AttackUser();
         }
@@ -775,7 +818,7 @@ function AttackUserInt() {
             shootingXYUser[1][10]=j1;
             field[i1][j1].classList.add('crackShip');
             field[i1][j1].labelShooting=true;
-            alert ('Вы попали!');
+            field[i1][j1].classList.remove("hover");
             Desk3Ship2Health=1;
             AttackUser();
             }
@@ -784,6 +827,7 @@ function AttackUserInt() {
         shootingXYUser[1][11]=j1;
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
+        field[i1][j1].classList.remove("hover");
         intShootingLabel(shootingXYUser[0][9],shootingXYUser[1][9]);
         intShootingLabel(shootingXYUser[0][10],shootingXYUser[1][10]);
         intShootingLabel(shootingXYUser[0][11],shootingXYUser[1][11]);
@@ -791,7 +835,6 @@ function AttackUserInt() {
         field[shootingXYUser[0][10]][shootingXYUser[1][10]].classList.remove('FailShot');
         field[shootingXYUser[0][11]][shootingXYUser[1][11]].classList.remove('FailShot');
         Desk3Ship2Health=0;
-        alert('Вы потопили трёхпалубный корабль!');
         AttackUser();
         }
     }
@@ -801,7 +844,7 @@ function AttackUserInt() {
             shootingXYUser[1][12]=j1;
             field[i1][j1].classList.add('crackShip');
             field[i1][j1].labelShooting=true;
-            alert ('Вы попали!');
+            field[i1][j1].classList.remove("hover");
             Desk4Ship1Health=3;
             AttackUser();
         }
@@ -810,7 +853,7 @@ function AttackUserInt() {
             shootingXYUser[1][13]=j1;
             field[i1][j1].classList.add('crackShip');
             field[i1][j1].labelShooting=true;
-            alert ('Вы попали!');
+            field[i1][j1].classList.remove("hover");
             Desk4Ship1Health=2;
             AttackUser();
         }
@@ -819,7 +862,7 @@ function AttackUserInt() {
             shootingXYUser[1][14]=j1;
             field[i1][j1].classList.add('crackShip');
             field[i1][j1].labelShooting=true;
-            alert ('Вы попали!');
+            field[i1][j1].classList.remove("hover");
             Desk4Ship1Health=1;
             AttackUser();
         }
@@ -828,6 +871,7 @@ function AttackUserInt() {
             shootingXYUser[1][15]=j1;
             field[i1][j1].classList.add('crackShip');
             field[i1][j1].labelShooting=true;
+            field[i1][j1].classList.remove("hover");
             intShootingLabel(shootingXYUser[0][12],shootingXYUser[1][12]);
             intShootingLabel(shootingXYUser[0][13],shootingXYUser[1][13]);
             intShootingLabel(shootingXYUser[0][14],shootingXYUser[1][14]);
@@ -837,7 +881,6 @@ function AttackUserInt() {
             field[shootingXYUser[0][14]][shootingXYUser[1][14]].classList.remove('FailShot');
             field[shootingXYUser[0][15]][shootingXYUser[1][15]].classList.remove('FailShot');
             Desk4Ship1Health=0;
-            alert('Вы потопили четырёхпалубный корабль!');
             AttackUser();
         }
         
@@ -845,7 +888,8 @@ function AttackUserInt() {
     else if (field[i1][j1].shipIsHere==0) {
         field[i1][j1].classList.add('FailShot');
         field[i1][j1].labelShooting=true;
-        alert ('Вы не попали!');
+        field[i1][j1].classList.remove("hover");
+        arrow.classList.remove("arrow180");
         AttackAI();
     }
 }
@@ -1035,7 +1079,7 @@ else if (needToShootToShipSecond == true) {
 
 function checkByLabelShootingAI() {
     if (userField[xAttackAI][yAttackAI].labelShooting == false) {
-        setTimeout (AttackAIInt,500);
+        setTimeout (AttackAIInt,1000);
         return;
     }
     else if (userField[xAttackAI][yAttackAI].labelShooting == true) {
@@ -1063,7 +1107,6 @@ function checkByLabelShootingAI() {
             userField[xAttackAI][yAttackAI].labelShooting=true;
             intShootingLabelAI(xAttackAI,yAttackAI);
             userField[xAttackAI][yAttackAI].classList.remove('FailShot');
-            alert ('Ваш однопалубный корабль потопили!');
             needToShootToShip=false;
             needToShootToShipSecond = false;
             AttackAI();
@@ -1076,7 +1119,6 @@ function checkByLabelShootingAI() {
             shootingXY[0][0]=xAttackAI;
             shootingXY[1][0]=yAttackAI;
             Desk2Ship1HealthUser=1;
-            alert ('В ваш корабль попали!');
             AI();
             return;
             }
@@ -1086,7 +1128,6 @@ function checkByLabelShootingAI() {
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
                 killShip (2,shootingXY[0][0],shootingXY[1][0],shootingXY[0][1],shootingXY[1][1],0,0,0,0);
                 Desk2Ship1HealthUser=0;
-                alert ('Ваш двухпалубный корабль потопили!');
                 AttackAI();
                 return;
                 }
@@ -1098,7 +1139,6 @@ function checkByLabelShootingAI() {
             shootingXY[0][2]=xAttackAI;
             shootingXY[1][2]=yAttackAI;
             Desk2Ship2HealthUser=1;
-            alert ('В ваш корабль попали!');
             AI();
             return;
             }
@@ -1108,7 +1148,6 @@ function checkByLabelShootingAI() {
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
                 killShip (2,shootingXY[0][2],shootingXY[1][2],shootingXY[0][3],shootingXY[1][3],0,0,0,0);
                 Desk2Ship2HealthUser=0;
-                alert ('Ваш двухпалубный корабль потопили!');
                 AttackAI();
                 return;
                 }
@@ -1120,7 +1159,6 @@ function checkByLabelShootingAI() {
             shootingXY[0][4]=xAttackAI;
             shootingXY[1][4]=yAttackAI;
             Desk2Ship3HealthUser=1;
-            alert ('В ваш корабль попали!');
             AI();
             return;
             }
@@ -1130,7 +1168,6 @@ function checkByLabelShootingAI() {
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
                 killShip (2,shootingXY[0][4],shootingXY[1][4],shootingXY[0][5],shootingXY[1][5],0,0,0,0);
                 Desk2Ship3HealthUser=0;
-                alert ('Ваш двухпалубный корабль потопили!');
                 AttackAI();
                 return;
                 }
@@ -1142,7 +1179,6 @@ function checkByLabelShootingAI() {
             shootingXY[0][6]=xAttackAI;
             shootingXY[1][6]=yAttackAI;
             Desk3Ship1HealthUser=2;
-            alert ('В ваш корабль попали!');
             AI();
             return;
             }
@@ -1153,7 +1189,6 @@ function checkByLabelShootingAI() {
                 shootingXY[1][7]=yAttackAI;
                 Desk3Ship1HealthUser=1;
                 needToShootToShipSecond = true;
-                alert ('В ваш корабль попали!');
                 AI();
                 return;
                 }
@@ -1163,7 +1198,6 @@ function checkByLabelShootingAI() {
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
                 killShip (3,shootingXY[0][6],shootingXY[1][6],shootingXY[0][7],shootingXY[1][7],shootingXY[0][8],shootingXY[1][8],0,0);
                 Desk3Ship1HealthUser=0;
-                alert ('Ваш трёхпалубный корабль потопили!');
                 AttackAI();
                 return;
                 }
@@ -1175,7 +1209,6 @@ function checkByLabelShootingAI() {
             shootingXY[0][9]=xAttackAI;
             shootingXY[1][9]=yAttackAI;
             Desk3Ship2HealthUser=2;
-            alert ('В ваш корабль попали!');
             AI();
             return;
             }
@@ -1186,7 +1219,6 @@ function checkByLabelShootingAI() {
                 shootingXY[1][10]=yAttackAI;
                 Desk3Ship2HealthUser=1;
                 needToShootToShipSecond = true;
-                alert ('В ваш корабль попали!');
                 AI();
                 return;
                 }
@@ -1196,7 +1228,6 @@ function checkByLabelShootingAI() {
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
                 killShip (3,shootingXY[0][9],shootingXY[1][9],shootingXY[0][10],shootingXY[1][10],shootingXY[0][11],shootingXY[1][11],0,0);
                 Desk3Ship2HealthUser=0;
-                alert ('Ваш трёхпалубный корабль потопили!');
                 AttackAI();
                 return;
                 }
@@ -1208,7 +1239,6 @@ function checkByLabelShootingAI() {
             shootingXY[0][12]=xAttackAI;
             shootingXY[1][12]=yAttackAI;
             Desk4Ship1HealthUser=3;
-            alert ('В ваш корабль попали!');
             AI();
             return;
             }
@@ -1219,7 +1249,6 @@ function checkByLabelShootingAI() {
                 shootingXY[1][13]=yAttackAI;
                 Desk4Ship1HealthUser=2;
                 needToShootToShipSecond = true;
-                alert ('В ваш корабль попали!');
                 AI();
                 return;
                 }
@@ -1230,7 +1259,6 @@ function checkByLabelShootingAI() {
                 shootingXY[1][14]=yAttackAI;
                 Desk4Ship1HealthUser=1;
                 needToShootToShipSecond = true;
-                alert ('В ваш корабль попали!');
                 AI();
                 return;
                     }
@@ -1240,7 +1268,6 @@ function checkByLabelShootingAI() {
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
                 killShip (4,shootingXY[0][12],shootingXY[1][12],shootingXY[0][13],shootingXY[1][13],shootingXY[0][14],shootingXY[1][14],shootingXY[0][15],shootingXY[1][15]);
                 Desk4Ship1HealthUser=0;
-                alert ('Ваш четырёхпалубный корабль потопили!');
                 AttackAI();
                 return;
                 }
@@ -1248,7 +1275,6 @@ function checkByLabelShootingAI() {
         else if (userField[xAttackAI][yAttackAI].shipIsHere==0) {
             userField[xAttackAI][yAttackAI].labelShooting=true;
             userField[xAttackAI][yAttackAI].classList.add('FailShot');
-            alert ('В Вас не попали!');
             if (needToShootToShip == true && needToShootToShipSecond == false) {
                 xAttackAI=xCrackedShip1;
                 yAttackAI=yCrackedShip1;
@@ -1257,7 +1283,7 @@ function checkByLabelShootingAI() {
                 xAttackAI=xCrackedShip2;
                 yAttackAI=yCrackedShip2;
             } 
-            AttackUser();
+            setTimeout (AttackUser,1000);
             return;
         }
     
