@@ -1,3 +1,7 @@
+@import "fonts/fonts.css" screen;
+body {
+    background-color: #F1F6FB;
+}
 .containerStart {
     display: flex;
     flex-direction: column;
@@ -5,40 +9,105 @@
     justify-content: space-around;
     align-items: center;
     }
+
 .seaBattle {
-    color: blue;
+    color: #0351C1;
     text-align: center;
-    font-size: 72px;
+    font-size: 48px;
     margin-top: 30px;
+    font-family: RobotoMedium;
+    display: flex;
+    align-items: center;
+}
+.seaBattleInGame {
+    margin-top: 5px;
+}
+.seaBattleInt {
+    margin-left: 35px;
+    margin-right: 35px;
+}
+.seaBattleInt p{
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.rules {
+    width: 500px;
+    font-size: 18px;
+    font-family: Roboto;
+    color: #052555;
+    text-align: justify;
+}
+.rules p{
+    margin-left: 10px;
+    margin-right: 10px;
 }
 .seaBattleBottom {
-    background-color: blue;
-    text-align: center;
+    background-color: #5199FF;
     font-size: 18px;
-    color: white;
+    width: 200px;
+    height: 50px;
+    color: #FFFFFF;
     margin-top: 30px;
-    width: max-content;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.startGame{
+    background-color: #5199FF;
+    font-size: 18px;
+    width: 350px;
+    height: 50px;
+    color: #FFFFFF;
+    margin-top: 30px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.replacing {
+    background-color: #5199FF;
+    font-size: 18px;
+    width: 350px;
+    height: 50px;
+    color: #FFFFFF;
+    margin-top: 30px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.replacing p {
+    margin: 0px;
+}
+.startGame p {
+    margin: 0px;
+}
+.seaBattleBottom p{
+    margin: 0px;
 }
 .leftFieldText {
-    color: blue;
+    color: #0351C1;
     text-align: center;
-    font-size: 36px;
+    font-size: 24px;
+    font-family: RobotoMedium;
 }
 .rigthFieldText {
-    font-size: 36px;
-    color: blue;
+    font-size: 24px;
+    color: #0351C1;
     text-align: center;
+    font-family: RobotoMedium;
 }
 .string {
     background-color: white;
     display: flex;
 }
 .square {
-    background-color: blue;
+    background-color: #1771F1;
     height: 30px;
     width: 30px;
-    margin-left: 3px;
-    margin-top: 3px;
+    margin-left: 1px;
+    margin-top: 1px;
 }
 .container {
     display: flex;
@@ -57,54 +126,76 @@
 
 }
 .ship4 {
-    background-color: blue;
+    background-color: #FFC11E;
 }
 .ship3 {
-    background-color: blue;
+    background-color: #FFC11E;
 }
 .ship2 {
-    background-color: blue;
+    background-color: #FFC11E;
 }
 .ship1 {
-    background-color: blue;
+    background-color: #FFC11E;
 }
 .buttonShip4 {
-    width: 150px;
+    width: 120px;
     height: 30px;
     margin-top: 10px;
-    background-color: gold;
+    background-color: #FFC11E;
 }
 .buttonShip3 {
-    width: 100px;
+    width: 90px;
     height: 30px;
     margin-top: 10px;
-    background-color: gold;
+    background-color: #FFC11E;
 }
 .buttonShip2 {
     width: 60px;
     height: 30px;
     margin-top: 10px;
-    background-color: gold;
+    background-color: #FFC11E;
 }
 .buttonShip1 {
     width: 30px;
     height: 30px;
     margin-top: 10px;
-    background-color: gold;
+    background-color: #FFC11E;
 }
 .buttomsForChange {
     display: flex;
     width: 100%;
-    align-items: center;
+    /* align-items: center; */
 }
  .centerField {
-    width: 100px;
-    height: 100px;
-    margin-top: 250px;
-
+    width: 350px;
+    margin-top: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 } 
+.information {
+    font-size: 20px;
+    font-family: RobotoMedium;
+    color: #052555;
+    /* height: 70px; */
+    min-width: 350px;
+    background-color: #E5F0FF;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #5199FF;
+    border-radius: 5px;
+    text-align: center;
+    min-height: 58px;
+}
+.informationRed{
+    color: #EE3D48;
+}
+.informationGreen {
+    color: #008736;
+}
 .arrow {
-    width: 100%;
+    width: 100px;
+    margin-top: 25px;
 }
 .arrow180 {
     transform: rotate(180deg);
@@ -117,18 +208,17 @@
     align-items: flex-end;
 } 
 .buttomAutoPlasing {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: blue;
-    font-size: 20px;
+    color: #1771F1;
+    font-size: 16px;
     width: 50%;
     height: 30px;
-/*     margin-top: 50px;
-    margin-bottom: 50px; */
-    background-color: gold;
-    
-
+    font-family: RobotoMedium;
+    background-color: #FFC11E;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #D2AA1B;
+    border-radius: 10px;
+    margin-top: 10px;
 }
 .userShip4 {
     background-color: gold;
@@ -172,6 +262,9 @@
 }
 .FailShot {
     background-color: skyblue;
+}
+.notCrackedShip {
+    background-color: gold;
 }
 @media (max-width: 844px) {
     .container {

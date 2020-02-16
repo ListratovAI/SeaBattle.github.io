@@ -5,7 +5,29 @@ document.body.appendChild(container);
 let seaBattle = document.createElement("div");
 seaBattle.classList.add("seaBattle");
 container.appendChild(seaBattle);
-seaBattle.innerHTML = "<p>Морской бой</p>";
+
+
+let seaBattleInt = document.createElement("div");
+seaBattleInt.classList.add("seaBattleInt");
+let picHelmContainer1 = document.createElement("div");
+let picHelmContainer2 = document.createElement("div");
+let picHelm = document.createElement("img");
+picHelm.src = ("img/helm.png");
+let picHelm2 = document.createElement("img");
+picHelm2.src = ("img/helm.png");
+
+seaBattle.appendChild(picHelmContainer1);
+seaBattle.appendChild(seaBattleInt);
+seaBattleInt.innerHTML = "<p>Морской бой</p>";
+seaBattle.appendChild(picHelmContainer2);
+
+picHelmContainer1.appendChild(picHelm);
+picHelmContainer2.appendChild(picHelm2);
+
+let rules = document.createElement("div");
+rules.classList.add("rules");
+container.appendChild(rules);
+rules.innerHTML ="<p>«Морской бой» — игра для двух участников, в которой игроки по очереди называют координаты на неизвестной им карте соперника.<br><br> Если у соперника по этим координатам имеется корабль (координаты заняты), то корабль или его часть «топится», а попавший получает право сделать ещё один ход. Цель игрока — первым потопить все корабли противника.</p.";
 
 let seaBattleBottom = document.createElement("button");
 seaBattleBottom.classList.add("seaBattleBottom");
@@ -18,22 +40,32 @@ seaBattleBottom.addEventListener('click',SEA_BATTLE_GAME);
 
 function SEA_BATTLE_GAME() {
 
+container.removeChild(rules);
 container.removeChild(seaBattleBottom);
-container.removeChild(seaBattle);
+seaBattle.classList.add("seaBattleInGame");
+//container.removeChild(seaBattle);
 
+
+let containerInt = document.createElement("div");
 let leftField = document.createElement("div");
 let centerField = document.createElement("div");
+let information = document.createElement("div");
 let arrow = document.createElement("img");
+let startGame = document.createElement("button");
+let replacing = document.createElement("button");
 let rightField = document.createElement("div");
 let leftFieldText = document.createElement("div");
 let rigthFieldText = document.createElement("div");
 let containerForGame = document.createElement("div");
 let containerForUserField = document.createElement("div");
 
-container.classList.remove("containerStart");
-container.classList.add("container");
+//container.classList.remove("containerStart");
+containerInt.classList.add("container");
 leftField.classList.add("leftField");
 centerField.classList.add("centerField");
+information.classList.add("information");
+startGame.classList.add("startGame");
+replacing.classList.add("replacing");
 arrow.classList.add("arrow");
 rightField.classList.add("rightField");
 leftFieldText.classList.add("leftFieldText");
@@ -43,16 +75,22 @@ containerForUserField.classList.add("containerForUserField");
 
 arrow.src = ("img/arrow.png");
 
-container.appendChild(leftField);
-container.appendChild(centerField);
-container.appendChild(rightField);
+container.appendChild(containerInt);
+containerInt.appendChild(leftField);
+containerInt.appendChild(centerField);
+containerInt.appendChild(rightField);
 leftField.appendChild(leftFieldText);
 leftField.appendChild(containerForGame);
-centerField.appendChild(arrow);
+centerField.appendChild(information);
+centerField.appendChild(startGame);
+centerField.appendChild(replacing);
+//centerField.appendChild(arrow);
 rightField.appendChild(rigthFieldText);
 rightField.appendChild(containerForUserField);
 
-
+startGame.innerHTML = "<p>Начать игру</p>";
+replacing.innerHTML = "<p>Перераспределить корабли</p>";
+information.innerHTML = "<p>Расставьте корабли</p>";
 leftFieldText.innerHTML = "<p>Поле противника</p>";
 rigthFieldText.innerHTML = "<p>Ваше поле</p>";
 
@@ -98,7 +136,7 @@ function getRandomBoolean() {
     }
 }
 //генерация кораблей
-function autoPlasing(lengthOfShip,NumberOfShip) {
+function autoPlasing(fieldAuto,lengthOfShip,NumberOfShip) {
     let I = getRandom (0,9);
     let J = getRandom (0,9);
     let direction = getRandomBoolean();
@@ -107,8 +145,8 @@ function autoPlasing(lengthOfShip,NumberOfShip) {
     function checkByLabel(shipLength) {
         if (direction==true && (I+(shipLength-1))<=9) {
             for (let k=0;k<=shipLength-1;k++){
-                if (field[I+k][J].label==true) {
-                    autoPlasing(lengthOfShip,NumberOfShip);
+                if (fieldAuto[I+k][J].label==true) {
+                    autoPlasing(fieldAuto,lengthOfShip,NumberOfShip);
                     bad = true;
                     return;
                 }
@@ -117,8 +155,8 @@ function autoPlasing(lengthOfShip,NumberOfShip) {
         }
         else if (direction==true && (I+(shipLength-1))>9) {
             for (let k=0;k<=shipLength-1;k++){
-                if (field[I-k][J].label==true) {
-                    autoPlasing(lengthOfShip,NumberOfShip);
+                if (fieldAuto[I-k][J].label==true) {
+                    autoPlasing(fieldAuto,lengthOfShip,NumberOfShip);
                     bad = true;
                     return;                  
                 }
@@ -127,8 +165,8 @@ function autoPlasing(lengthOfShip,NumberOfShip) {
         }
         else if (direction==false && (J+(shipLength-1))<=9) {
             for (let k=0;k<=shipLength-1;k++){
-                if (field[I][J+k].label==true) {
-                    autoPlasing(lengthOfShip,NumberOfShip);
+                if (fieldAuto[I][J+k].label==true) {
+                    autoPlasing(fieldAuto,lengthOfShip,NumberOfShip);
                     bad = true;
                     return;
                 }
@@ -137,8 +175,8 @@ function autoPlasing(lengthOfShip,NumberOfShip) {
         }
         else if (direction==false && (J+(shipLength-1))>9){
             for (let k=0;k<=shipLength-1;k++){
-                if (field[I][J-k].label==true) {
-                    autoPlasing(lengthOfShip,NumberOfShip);
+                if (fieldAuto[I][J-k].label==true) {
+                    autoPlasing(fieldAuto,lengthOfShip,NumberOfShip);
                     bad = true;
                     return;
                 }
@@ -150,16 +188,16 @@ checkByLabel(lengthOfShip);
 //функция для различных цветов кораблей
 function colorShip(i,j,length) {
     if (length==4){
-        field[i][j].classList.add('ship4');
+        fieldAuto[i][j].classList.add('ship4');
     }
     else if (length==3){
-        field[i][j].classList.add('ship3');
+        fieldAuto[i][j].classList.add('ship3');
     }
     else if (length==2){
-        field[i][j].classList.add('ship2');
+        fieldAuto[i][j].classList.add('ship2');
     }
     else if (length==1){
-        field[i][j].classList.add('ship1');
+        fieldAuto[i][j].classList.add('ship1');
     }
 }
 if (bad==false){
@@ -167,21 +205,21 @@ if (bad==false){
 }
 function autoPlasingInt() {
     colorShip(I,J,lengthOfShip);
-    field[I][J].shipIsHere=lengthOfShip;
-    field[I][J].numberOfThisTypeShip=NumberOfShip;
+    fieldAuto[I][J].shipIsHere=lengthOfShip;
+    fieldAuto[I][J].numberOfThisTypeShip=NumberOfShip;
     intLabel(I,J);
     if (direction==true) {
         for (let i=1;i<=lengthOfShip-1;i++) {
             if ((I+(lengthOfShip-1))<=9) {
                 colorShip((I+i),J,lengthOfShip);
-                field[I+i][J].shipIsHere=lengthOfShip;
-                field[I+i][J].numberOfThisTypeShip=NumberOfShip;
+                fieldAuto[I+i][J].shipIsHere=lengthOfShip;
+                fieldAuto[I+i][J].numberOfThisTypeShip=NumberOfShip;
                 intLabel(I+i,J);
             }
             else {
                 colorShip((I-i),J,lengthOfShip);
-                field[I-i][J].shipIsHere=lengthOfShip;
-                field[I-i][J].numberOfThisTypeShip=NumberOfShip;
+                fieldAuto[I-i][J].shipIsHere=lengthOfShip;
+                fieldAuto[I-i][J].numberOfThisTypeShip=NumberOfShip;
                 intLabel(I-i,J);
             }
         }
@@ -190,54 +228,64 @@ function autoPlasingInt() {
         for (let j=1;j<=lengthOfShip-1;j++) {
             if ((J+(lengthOfShip-1))<=9) {
                 colorShip(I,(J+j),lengthOfShip);
-                field[I][J+j].shipIsHere=lengthOfShip;
-                field[I][J+j].numberOfThisTypeShip=NumberOfShip;
+                fieldAuto[I][J+j].shipIsHere=lengthOfShip;
+                fieldAuto[I][J+j].numberOfThisTypeShip=NumberOfShip;
                 intLabel(I,J+j);
             }
             else {
                 colorShip(I,(J-j),lengthOfShip);
-                field[I][J-j].shipIsHere=lengthOfShip;
-                field[I][J-j].numberOfThisTypeShip=NumberOfShip;
+                fieldAuto[I][J-j].shipIsHere=lengthOfShip;
+                fieldAuto[I][J-j].numberOfThisTypeShip=NumberOfShip;
                 intLabel(I,J-j);
             }
         }
     }
 
 }
-
-}
-console.time("autoplasing");
-autoPlasing(4,1); 
-autoPlasing(3,1); 
-autoPlasing(3,2); 
-autoPlasing(2,1); 
-autoPlasing(2,2); 
-autoPlasing(2,3); 
-autoPlasing(1,4); 
-autoPlasing(1,3); 
-autoPlasing(1,2); 
-autoPlasing(1,1);
-console.timeEnd("autoplasing");
 //функция для создания метки (чтоб корабль не ставился)
 function intLabel(i,j) {
-field[i][j].label = true;
-try {field[i+1][j].label = true;} 
-catch (a) {}
-try {field[i+1][j+1].label = true;} 
-catch (a) {}
-try {field[i+1][j-1].label = true;}
-catch (a) {}
-try {field[i][j+1].label = true;} 
-catch (a) {}
-try {field[i][j-1].label = true;}
-catch (a) {}
-try {field[i-1][j].label = true;}
-catch (a) {}
-try {field[i-1][j+1].label = true;}
-catch (a) {}
-try {field[i-1][j-1].label = true;}
-catch (a) {}
+    fieldAuto[i][j].label = true;
+    try {fieldAuto[i+1][j].label = true;} 
+    catch (a) {}
+    try {fieldAuto[i+1][j+1].label = true;} 
+    catch (a) {}
+    try {fieldAuto[i+1][j-1].label = true;}
+    catch (a) {}
+    try {fieldAuto[i][j+1].label = true;} 
+    catch (a) {}
+    try {fieldAuto[i][j-1].label = true;}
+    catch (a) {}
+    try {fieldAuto[i-1][j].label = true;}
+    catch (a) {}
+    try {fieldAuto[i-1][j+1].label = true;}
+    catch (a) {}
+    try {fieldAuto[i-1][j-1].label = true;}
+    catch (a) {}
+    }
 }
+
+autoPlasing(field,4,1); 
+autoPlasing(field,3,1); 
+autoPlasing(field,3,2); 
+autoPlasing(field,2,1); 
+autoPlasing(field,2,2); 
+autoPlasing(field,2,3); 
+autoPlasing(field,1,4); 
+autoPlasing(field,1,3); 
+autoPlasing(field,1,2); 
+autoPlasing(field,1,1);
+
+function removeClasses() {
+    for (let i=0; i<=9;i++){
+        for (let j=0;j<=9;j++){
+            field[i][j].classList.remove("ship4");
+            field[i][j].classList.remove("ship3");
+            field[i][j].classList.remove("ship2");
+            field[i][j].classList.remove("ship1");
+        }
+    }
+}
+ removeClasses();
 
 function intLabelUser(i,j) {
     userField[i][j].label = true;
@@ -289,7 +337,7 @@ containerForUserField.appendChild(buttomsForChange);
 let buttomAutoPlasing = document.createElement("button");
 buttomAutoPlasing.classList.add("buttomAutoPlasing");
 buttomsForChange.appendChild(buttomAutoPlasing);
-buttomAutoPlasing.innerHTML = "Автоматически";
+buttomAutoPlasing.innerHTML = "АВТОМАТИЧЕСКИ";
 
 let buttomsShips = document.createElement("div");
 buttomsShips.classList.add("buttomsShips");
@@ -324,6 +372,102 @@ let yAttackAI;
 let counterShips=10;
 let addEventListenerForAIField = false;
 
+buttomAutoPlasing.addEventListener('click',userAutoPlacing);
+
+//функция для автоматической расстановки кораблей
+function userAutoPlacing() {
+    dischargeField();
+autoPlasing(userField,4,1); 
+autoPlasing(userField,3,1); 
+autoPlasing(userField,3,2); 
+autoPlasing(userField,2,1); 
+autoPlasing(userField,2,2); 
+autoPlasing(userField,2,3); 
+autoPlasing(userField,1,4); 
+autoPlasing(userField,1,3); 
+autoPlasing(userField,1,2); 
+autoPlasing(userField,1,1);
+counterShips=0;
+try {
+buttomsShips.removeChild (buttonShip2);}
+catch(e){};
+try {
+buttomsShips.removeChild (buttonShip3);
+}
+catch(e){};
+try {
+buttomsShips.removeChild (buttonShip4);
+}
+catch(e){};
+try {
+buttomsShips.removeChild (buttonShip1);
+}
+catch(e){};
+}
+
+//функционал кнопки очищения поля
+replacing.addEventListener('click',replacingShips);
+
+function replacingShips() {
+    dischargeField();
+    buttomsShips.appendChild (buttonShip4);
+    buttomsShips.appendChild (buttonShip3);
+    buttomsShips.appendChild (buttonShip2);
+    buttomsShips.appendChild (buttonShip1);
+}
+
+
+//функция для очистки поля
+function dischargeField() {
+    for (let i=0;i<=9;i++){
+        for (let j=0;j<=9;j++){
+            userField[i][j].classList.remove('ship4','ship3','ship2','ship1');
+            userField[i][j].label=false;
+            userField[i][j].shipIsHere=0;
+            userField[i][j].numberOfThisTypeShip=0;
+            userField[i][j].labelShooting=false;
+            counterShips = 10;
+        }
+    }
+}
+
+startGame.addEventListener('click', startGameFunc);
+
+function startGameFunc() {
+    if (counterShips == 0){
+    containerForUserField.removeChild(buttomsForChange); 
+    centerField.appendChild(arrow);
+    centerField.removeChild(startGame);
+    centerField.removeChild(replacing);
+    information.innerHTML = "";
+    let whoFirst = getRandomBoolean();
+    if (whoFirst == true) {
+        information.innerHTML = "<p>Стреляйте!</p>";
+        AttackUser();
+    }
+    else {
+        AttackAI();
+    }
+}
+    else {
+        information.innerHTML = "<p>Вы ещё не расставили корабли!</p>";
+        setTimeout(doNotShips,1000);
+    }
+}
+
+function colorRed(){
+    information.classList.add("informationRed");
+    information.classList.remove("informationGreen");
+}
+function colorGreen(){
+    information.classList.add("informationGreen");
+    information.classList.remove("informationRed");
+}
+
+//надпись, если корабли не расставлены
+function doNotShips() {
+    information.innerHTML = "<p>Расставьте корабли</p>";
+}
 
 //меняем направление корабля по пробелу
 document.addEventListener('keydown', function (event) {
@@ -409,7 +553,7 @@ function addShipsInt() {
         for (let i=0;i<desk;i++){
             if ((i1+desk-1)<=9) {
                 userField[i1+i][j1].classList.remove(`mouseOver${desk}`);
-                userField[i1+i][j1].classList.add(`userShip${desk}`);
+                userField[i1+i][j1].classList.add(`ship${desk}`);
                 userField[i1+i][j1].shipIsHere=desk;
                 intLabelUser(i1+i,j1);
                 if (desk==2) {
@@ -424,7 +568,7 @@ function addShipsInt() {
                 
             } else {
                 userField[i1-i][j1].classList.remove(`mouseOver${desk}`);
-                userField[i1-i][j1].classList.add(`userShip${desk}`);
+                userField[i1-i][j1].classList.add(`ship${desk}`);
                 userField[i1-i][j1].shipIsHere=desk;
                 intLabelUser(i1-i,j1);
                 if (desk==2) {
@@ -443,7 +587,7 @@ function addShipsInt() {
         for (let j=0;j<desk;j++){
             if ((j1+desk-1)<=9) {
                 userField[i1][j1+j].classList.remove(`mouseOver${desk}`);
-                userField[i1][j1+j].classList.add(`userShip${desk}`);
+                userField[i1][j1+j].classList.add(`ship${desk}`);
                 userField[i1][j1+j].shipIsHere=desk;
                 intLabelUser(i1,j1+j);
                 if (desk==2) {
@@ -457,7 +601,7 @@ function addShipsInt() {
                 
             } else {
                 userField[i1][j1-j].classList.remove(`mouseOver${desk}`);
-                userField[i1][j1-j].classList.add(`userShip${desk}`);
+                userField[i1][j1-j].classList.add(`ship${desk}`);
                 userField[i1][j1-j].shipIsHere=desk;
                 intLabelUser(i1,j1-j);
                 if (desk==2) {
@@ -482,10 +626,6 @@ function addShipsInt() {
                 }
             } 
             counterShips--;
-    if (counterShips==0) {
-        AttackAI();
-        containerForUserField.removeChild(buttomsForChange);
-    }
 }
 
 }
@@ -621,7 +761,8 @@ let Desk3Ship1Health=3;
 let Desk3Ship2Health=3;
 let Desk4Ship1Health=4;
 
-
+let counterUserShips = 10;
+let counterAIShips = 10;
 
 //функция для атаки на вражеское поле 
 function AttackUser() {
@@ -687,7 +828,15 @@ function AttackUserInt() {
         field[i1][j1].classList.add('crackShip');
         field[i1][j1].labelShooting=true;
         field[i1][j1].classList.remove("hover");
+        information.innerHTML = "<p>Вы потопили однопалубный корабль!</p>";
+        colorGreen();
+        counterAIShips--;
+        if (counterAIShips == 0) {
+            userWin();
+        }
+        else {
         AttackUser();
+        }
     }
 
     // TODO: Как то сократить этот огромный кусок кода
@@ -700,6 +849,8 @@ function AttackUserInt() {
         field[i1][j1].labelShooting=true;
         field[i1][j1].classList.remove("hover");
         Desk2Ship1Health=1;
+        information.innerHTML = "<p>Вы попали!</p>";
+        colorGreen();
         AttackUser();
         }
         else if (Desk2Ship1Health == 1) {
@@ -713,7 +864,15 @@ function AttackUserInt() {
         field[shootingXYUser[0][0]][shootingXYUser[1][0]].classList.remove('FailShot');
         field[shootingXYUser[0][1]][shootingXYUser[1][1]].classList.remove('FailShot');
         Desk2Ship1Health=0;
+        information.innerHTML = "<p>Вы потопили двухпалубный корабль!</p>";
+        colorGreen();
+        counterAIShips--;
+        if (counterAIShips == 0) {
+            userWin();
+        }
+        else {
         AttackUser();
+        }
         }
     }
     else if (field[i1][j1].shipIsHere==2 && field[i1][j1].numberOfThisTypeShip==1) {
@@ -725,6 +884,8 @@ function AttackUserInt() {
         field[i1][j1].labelShooting=true;
         field[i1][j1].classList.remove("hover");
         Desk2Ship2Health=1;
+        information.innerHTML = "<p>Вы попали!</p>";
+        colorGreen();
         AttackUser();
         }
         else if (Desk2Ship2Health == 1) {
@@ -738,7 +899,15 @@ function AttackUserInt() {
         field[shootingXYUser[0][2]][shootingXYUser[1][2]].classList.remove('FailShot');
         field[shootingXYUser[0][3]][shootingXYUser[1][3]].classList.remove('FailShot');
         Desk2Ship2Health=0;
+        information.innerHTML = "<p>Вы потопили двухпалубный корабль!</p>";
+        colorGreen();
+        counterAIShips--;
+        if (counterAIShips == 0) {
+            userWin();
+        }
+        else {
         AttackUser();
+        }
         }
     }
     else if (field[i1][j1].shipIsHere==2 && field[i1][j1].numberOfThisTypeShip==3) {
@@ -750,6 +919,8 @@ function AttackUserInt() {
         field[i1][j1].labelShooting=true;
         field[i1][j1].classList.remove("hover");
         Desk2Ship3Health=1;
+        information.innerHTML = "<p>Вы попали!</p>";
+        colorGreen();
         AttackUser();
         }
         else if (Desk2Ship3Health == 1) {
@@ -763,7 +934,15 @@ function AttackUserInt() {
         field[shootingXYUser[0][4]][shootingXYUser[1][4]].classList.remove('FailShot');
         field[shootingXYUser[0][5]][shootingXYUser[1][5]].classList.remove('FailShot');
         Desk2Ship3Health=0;
+        information.innerHTML = "<p>Вы потопили двухпалубный корабль!</p>";
+        colorGreen();
+        counterAIShips--;
+        if (counterAIShips == 0) {
+            userWin();
+        }
+        else {
         AttackUser();
+        }
         }
     }
     else if (field[i1][j1].shipIsHere==3 && field[i1][j1].numberOfThisTypeShip==2) {
@@ -775,6 +954,8 @@ function AttackUserInt() {
         field[i1][j1].labelShooting=true;
         field[i1][j1].classList.remove("hover");
         Desk3Ship1Health=2;
+        information.innerHTML = "<p>Вы попали!</p>";
+        colorGreen();
         AttackUser();
         }
         else if (Desk3Ship1Health == 2) {
@@ -784,6 +965,8 @@ function AttackUserInt() {
             field[i1][j1].labelShooting=true;
             field[i1][j1].classList.remove("hover");
             Desk3Ship1Health=1;
+            information.innerHTML = "<p>Вы попали!</p>";
+            colorGreen();
             AttackUser();
             }
         else if (Desk3Ship1Health == 1) {
@@ -799,7 +982,15 @@ function AttackUserInt() {
         field[shootingXYUser[0][7]][shootingXYUser[1][7]].classList.remove('FailShot');
         field[shootingXYUser[0][8]][shootingXYUser[1][8]].classList.remove('FailShot');
         Desk3Ship1Health=0;
+        information.innerHTML = "<p>Вы потопили трёхпалубный корабль!</p>";
+        colorGreen();
+        counterAIShips--;
+        if (counterAIShips == 0) {
+            userWin();
+        }
+        else {
         AttackUser();
+        }
         }
     }
     else if (field[i1][j1].shipIsHere==3 && field[i1][j1].numberOfThisTypeShip==1) {
@@ -811,6 +1002,8 @@ function AttackUserInt() {
         field[i1][j1].labelShooting=true;
         field[i1][j1].classList.remove("hover");
         Desk3Ship2Health=2;
+        information.innerHTML = "<p>Вы попали!</p>";
+        colorGreen();
         AttackUser();
         }
         else if (Desk3Ship2Health == 2) {
@@ -820,6 +1013,8 @@ function AttackUserInt() {
             field[i1][j1].labelShooting=true;
             field[i1][j1].classList.remove("hover");
             Desk3Ship2Health=1;
+            information.innerHTML = "<p>Вы попали!</p>";
+            colorGreen();
             AttackUser();
             }
         else if (Desk3Ship2Health == 1) {
@@ -835,7 +1030,15 @@ function AttackUserInt() {
         field[shootingXYUser[0][10]][shootingXYUser[1][10]].classList.remove('FailShot');
         field[shootingXYUser[0][11]][shootingXYUser[1][11]].classList.remove('FailShot');
         Desk3Ship2Health=0;
+        information.innerHTML = "<p>Вы потопили трёхпалубный корабль!</p>";
+        colorGreen();
+        counterAIShips--;
+        if (counterAIShips == 0) {
+            userWin();
+        }
+        else {
         AttackUser();
+        }
         }
     }
     else if (field[i1][j1].shipIsHere==4) {
@@ -846,6 +1049,8 @@ function AttackUserInt() {
             field[i1][j1].labelShooting=true;
             field[i1][j1].classList.remove("hover");
             Desk4Ship1Health=3;
+            information.innerHTML = "<p>Вы попали!</p>";
+            colorGreen();
             AttackUser();
         }
         else if (Desk4Ship1Health==3) {
@@ -855,6 +1060,8 @@ function AttackUserInt() {
             field[i1][j1].labelShooting=true;
             field[i1][j1].classList.remove("hover");
             Desk4Ship1Health=2;
+            information.innerHTML = "<p>Вы попали!</p>";
+            colorGreen();
             AttackUser();
         }
         else if (Desk4Ship1Health==2) {
@@ -864,6 +1071,8 @@ function AttackUserInt() {
             field[i1][j1].labelShooting=true;
             field[i1][j1].classList.remove("hover");
             Desk4Ship1Health=1;
+            information.innerHTML = "<p>Вы попали!</p>";
+            colorGreen();
             AttackUser();
         }
         else if (Desk4Ship1Health==1) {
@@ -881,7 +1090,15 @@ function AttackUserInt() {
             field[shootingXYUser[0][14]][shootingXYUser[1][14]].classList.remove('FailShot');
             field[shootingXYUser[0][15]][shootingXYUser[1][15]].classList.remove('FailShot');
             Desk4Ship1Health=0;
+            information.innerHTML = "<p>Вы потопили четырёхпалубный корабль!</p>";
+            colorGreen();
+            counterAIShips--;
+            if (counterAIShips == 0) {
+                userWin();
+            }
+            else {
             AttackUser();
+            }
         }
         
     }
@@ -890,10 +1107,19 @@ function AttackUserInt() {
         field[i1][j1].labelShooting=true;
         field[i1][j1].classList.remove("hover");
         arrow.classList.remove("arrow180");
+        information.innerHTML = "<p>Мимо!</p>";
+        colorRed();
         AttackAI();
     }
 }
 }
+}
+
+//функция для победы юзера
+function userWin() {
+    information.innerHTML = "<p>Вы победили!</p>";
+    colorGreen();
+    centerField.removeChild(arrow);
 }
 function intShootingLabel(i,j) {
     try {field[i+1][j].classList.add('FailShot');
@@ -1109,7 +1335,15 @@ function checkByLabelShootingAI() {
             userField[xAttackAI][yAttackAI].classList.remove('FailShot');
             needToShootToShip=false;
             needToShootToShipSecond = false;
+            information.innerHTML = "<p>Ваш однопалубный корабль потопили!</p>";
+            colorRed();
+            counterUserShips--;
+            if (counterUserShips == 0) {
+                AIWin();
+            }
+            else {
             AttackAI();
+            }
             return;
         }
         else if (userField[xAttackAI][yAttackAI].shipIsHere==2 && userField[xAttackAI][yAttackAI].numberOfThisTypeShip==1) {
@@ -1119,6 +1353,8 @@ function checkByLabelShootingAI() {
             shootingXY[0][0]=xAttackAI;
             shootingXY[1][0]=yAttackAI;
             Desk2Ship1HealthUser=1;
+            information.innerHTML = "<p>В вас попали!</p>";
+            colorRed();
             AI();
             return;
             }
@@ -1128,7 +1364,15 @@ function checkByLabelShootingAI() {
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
                 killShip (2,shootingXY[0][0],shootingXY[1][0],shootingXY[0][1],shootingXY[1][1],0,0,0,0);
                 Desk2Ship1HealthUser=0;
+                information.innerHTML = "<p>Ваш двухпалубный корабль потопили!</p>";
+                colorRed();
+                counterUserShips--;
+                if (counterUserShips == 0) {
+                    AIWin();
+                }
+                else {
                 AttackAI();
+                }
                 return;
                 }
         }
@@ -1139,6 +1383,8 @@ function checkByLabelShootingAI() {
             shootingXY[0][2]=xAttackAI;
             shootingXY[1][2]=yAttackAI;
             Desk2Ship2HealthUser=1;
+            information.innerHTML = "<p>В вас попали!</p>";
+            colorRed();
             AI();
             return;
             }
@@ -1148,7 +1394,15 @@ function checkByLabelShootingAI() {
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
                 killShip (2,shootingXY[0][2],shootingXY[1][2],shootingXY[0][3],shootingXY[1][3],0,0,0,0);
                 Desk2Ship2HealthUser=0;
+                information.innerHTML = "<p>Ваш двухпалубный корабль потопили!</p>";
+                colorRed();
+                counterUserShips--;
+                if (counterUserShips == 0) {
+                    AIWin();
+                }
+                else {
                 AttackAI();
+                }
                 return;
                 }
         }
@@ -1159,6 +1413,8 @@ function checkByLabelShootingAI() {
             shootingXY[0][4]=xAttackAI;
             shootingXY[1][4]=yAttackAI;
             Desk2Ship3HealthUser=1;
+            information.innerHTML = "<p>В вас попали!</p>";
+            colorRed();
             AI();
             return;
             }
@@ -1168,7 +1424,15 @@ function checkByLabelShootingAI() {
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
                 killShip (2,shootingXY[0][4],shootingXY[1][4],shootingXY[0][5],shootingXY[1][5],0,0,0,0);
                 Desk2Ship3HealthUser=0;
+                information.innerHTML = "<p>Ваш двухпалубный корабль потопили!</p>";
+                colorRed();
+                counterUserShips--;
+                if (counterUserShips == 0) {
+                    AIWin();
+                }
+                else {
                 AttackAI();
+                }
                 return;
                 }
         }
@@ -1179,6 +1443,8 @@ function checkByLabelShootingAI() {
             shootingXY[0][6]=xAttackAI;
             shootingXY[1][6]=yAttackAI;
             Desk3Ship1HealthUser=2;
+            information.innerHTML = "<p>В вас попали!</p>";
+            colorRed();
             AI();
             return;
             }
@@ -1189,6 +1455,8 @@ function checkByLabelShootingAI() {
                 shootingXY[1][7]=yAttackAI;
                 Desk3Ship1HealthUser=1;
                 needToShootToShipSecond = true;
+                information.innerHTML = "<p>В вас попали!</p>";
+                colorRed();
                 AI();
                 return;
                 }
@@ -1198,7 +1466,15 @@ function checkByLabelShootingAI() {
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
                 killShip (3,shootingXY[0][6],shootingXY[1][6],shootingXY[0][7],shootingXY[1][7],shootingXY[0][8],shootingXY[1][8],0,0);
                 Desk3Ship1HealthUser=0;
+                information.innerHTML = "<p>Ваш трёхпалубный корабль потопили!</p>";
+                colorRed();
+                counterUserShips--;
+                if (counterUserShips == 0) {
+                    AIWin();
+                }
+                else {
                 AttackAI();
+                }
                 return;
                 }
         }
@@ -1209,6 +1485,8 @@ function checkByLabelShootingAI() {
             shootingXY[0][9]=xAttackAI;
             shootingXY[1][9]=yAttackAI;
             Desk3Ship2HealthUser=2;
+            information.innerHTML = "<p>В вас попали!</p>";
+            colorRed();
             AI();
             return;
             }
@@ -1219,6 +1497,8 @@ function checkByLabelShootingAI() {
                 shootingXY[1][10]=yAttackAI;
                 Desk3Ship2HealthUser=1;
                 needToShootToShipSecond = true;
+                information.innerHTML = "<p>В вас попали!</p>";
+                colorRed();
                 AI();
                 return;
                 }
@@ -1228,7 +1508,15 @@ function checkByLabelShootingAI() {
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
                 killShip (3,shootingXY[0][9],shootingXY[1][9],shootingXY[0][10],shootingXY[1][10],shootingXY[0][11],shootingXY[1][11],0,0);
                 Desk3Ship2HealthUser=0;
+                information.innerHTML = "<p>Ваш трёхпалубный корабль потопили!</p>";
+                colorRed();
+                counterUserShips--;
+                if (counterUserShips == 0) {
+                    AIWin();
+                }
+                else {
                 AttackAI();
+                }
                 return;
                 }
         }
@@ -1239,6 +1527,8 @@ function checkByLabelShootingAI() {
             shootingXY[0][12]=xAttackAI;
             shootingXY[1][12]=yAttackAI;
             Desk4Ship1HealthUser=3;
+            information.innerHTML = "<p>В вас попали!</p>";
+            colorRed();
             AI();
             return;
             }
@@ -1249,6 +1539,8 @@ function checkByLabelShootingAI() {
                 shootingXY[1][13]=yAttackAI;
                 Desk4Ship1HealthUser=2;
                 needToShootToShipSecond = true;
+                information.innerHTML = "<p>В вас попали!</p>";
+                colorRed();
                 AI();
                 return;
                 }
@@ -1259,6 +1551,8 @@ function checkByLabelShootingAI() {
                 shootingXY[1][14]=yAttackAI;
                 Desk4Ship1HealthUser=1;
                 needToShootToShipSecond = true;
+                information.innerHTML = "<p>В вас попали!</p>";
+                colorRed();
                 AI();
                 return;
                     }
@@ -1268,13 +1562,23 @@ function checkByLabelShootingAI() {
                 userField[xAttackAI][yAttackAI].classList.add('crackShip');
                 killShip (4,shootingXY[0][12],shootingXY[1][12],shootingXY[0][13],shootingXY[1][13],shootingXY[0][14],shootingXY[1][14],shootingXY[0][15],shootingXY[1][15]);
                 Desk4Ship1HealthUser=0;
+                information.innerHTML = "<p>Ваш четырёхпалубный корабль потопили!</p>";
+                colorRed();
+                counterUserShips--;
+                if (counterUserShips == 0) {
+                    AIWin();
+                }
+                else {
                 AttackAI();
+                }
                 return;
                 }
         }
         else if (userField[xAttackAI][yAttackAI].shipIsHere==0) {
             userField[xAttackAI][yAttackAI].labelShooting=true;
             userField[xAttackAI][yAttackAI].classList.add('FailShot');
+            information.innerHTML = "<p>В ваш корабль не попали!</p>";
+            colorGreen();
             if (needToShootToShip == true && needToShootToShipSecond == false) {
                 xAttackAI=xCrackedShip1;
                 yAttackAI=yCrackedShip1;
@@ -1291,7 +1595,20 @@ function checkByLabelShootingAI() {
 
 }
 
+function AIWin() {
+    for (let i=0;i<=9;i++){
+        for (let j=0;j<=9;j++){
+            if (field[i][j].shipIsHere!=0 && field[i][j].labelShooting==false) {
+                field[i][j].classList.add("notCrackedShip");
+            }
+        }
+    }
+    information.innerHTML = "<p>Вы проиграли!</p>";
+    colorRed();
+    centerField.removeChild(arrow);
+}
 
+//функция для потопления корабля
 function killShip(deskShip,x1,y1,x2,y2,x3,y3,x4,y4) {
     intShootingLabelAI(x1,y1);
     intShootingLabelAI(x2,y2);
