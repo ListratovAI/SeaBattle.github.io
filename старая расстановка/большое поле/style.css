@@ -1,0 +1,105 @@
+.string {
+    background-color: white;
+    display: flex;
+}
+.square {
+    background-color: blue;
+    height: 5px;
+    width: 5px;
+    margin-left: 1px;
+    margin-top: 1px;
+}
+.container {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.containerForGame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.ship4 {
+    background-color: gold;
+}
+.ship3 {
+    background-color: gold;
+}
+.ship2 {
+    background-color: gold;
+}
+.ship1 {
+    background-color: gold;
+}
+.test {
+    background-color: black;
+}
+.buttonShip4 {
+    width: 150px;
+    height: 30px;
+    margin-top: 35px;
+    background-color: tomato;
+}
+.buttonShip3 {
+    width: 100px;
+    height: 30px;
+    margin-top: 35px;
+    background-color: green;
+}
+.buttonShip2 {
+    width: 60px;
+    height: 30px;
+    margin-top: 35px;
+    background-color: darkmagenta;
+}
+.buttonShip1 {
+    width: 30px;
+    height: 30px;
+    margin-top: 35px;
+    background-color: gold;
+}
+.userShip4 {
+    background-color: gold;
+}
+.userShip3 {
+    background-color: gold;
+}
+.userShip2 {
+    background-color: gold;
+}
+.userShip1 {
+    background-color: gold;
+}
+
+.mouseOver4 {
+    background-color: lightcoral ;
+}
+.mouseOver3 {
+    background-color: greenyellow;
+}
+.mouseOver2 {
+    background-color: violet;
+}
+.mouseOver1 {
+    background-color: goldenrod;
+}
+.mouseOverBad4 {
+    background-color: black ;
+}
+.mouseOverBad3 {
+    background-color: black ;
+}
+.mouseOverBad2 {
+    background-color: black ;
+}
+.mouseOverBad1 {
+    background-color: black ;
+}
+.crackShip {
+    background-color: brown;
+}
+.FailShot {
+    background-color: skyblue;
+}
