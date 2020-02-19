@@ -1,3 +1,9 @@
+//элементы стартовой страницы
+let audioButton = document.createElement("button");
+audioButton.classList.add("audioButton");
+document.body.appendChild(audioButton);
+audioButton.innerHTML = "<p>Включить музыку</p>";
+
 let container = document.createElement("div");
 container.classList.add("containerStart");
 document.body.appendChild(container);
@@ -32,17 +38,52 @@ rules.innerHTML ="<p>«Морской бой» — игра для двух уч
 let seaBattleBottom = document.createElement("button");
 seaBattleBottom.classList.add("seaBattleBottom");
 container.appendChild(seaBattleBottom);
-seaBattleBottom.innerHTML = "<p>Начать бой!</p>";
+seaBattleBottom.innerHTML = "<p>Начать игру!</p>";
+
 
 seaBattleBottom.addEventListener('click',SEA_BATTLE_GAME);
+
+let firstGame = true;
+
+let audioON = false;
+audioButton.addEventListener("click",audioOnOff);
+
+let runningGame = false;
+//кнопка управления музыкой
+function audioOnOff() {
+    if (audioON == true) {
+        audioON = false;
+        stopPirates();
+        audioButton.innerHTML = "<p>Включить музыку</p>";
+    }
+    else {
+        audioON = true;
+        soundPirates();
+        audioButton.innerHTML = "<p>Выключить музыку</p>";
+    }
+}
+
+let audioPirates = document.createElement("audio");
+function soundPirates() {
+    if (audioON == true && runningGame == false) {
+    audioPirates.src = 'audio/pirates.mp3'; 
+    audioPirates.autoplay = true; 
+    }
+}
+function stopPirates() {
+    audioPirates.pause();
+    audioPirates.currentTime = 0;
+}
 
 //SEA_BATTLE_GAME();
 
 function SEA_BATTLE_GAME() {
 
-container.removeChild(rules);
-container.removeChild(seaBattleBottom);
-seaBattle.classList.add("seaBattleInGame");
+if (firstGame == true) {
+    container.removeChild(rules);
+    container.removeChild(seaBattleBottom);
+    seaBattle.classList.add("seaBattleInGame");
+}
 //container.removeChild(seaBattle);
 
 
@@ -88,13 +129,67 @@ centerField.appendChild(replacing);
 rightField.appendChild(rigthFieldText);
 rightField.appendChild(containerForUserField);
 
-startGame.innerHTML = "<p>Начать игру</p>";
+startGame.innerHTML = "<p>Начать бой!</p>";
 replacing.innerHTML = "<p>Перераспределить корабли</p>";
 information.innerHTML = "<p>Расставьте корабли</p>";
 leftFieldText.innerHTML = "<p>Поле противника</p>";
 rigthFieldText.innerHTML = "<p>Ваше поле</p>";
 
 
+//звуковые функции
+let audioFailClick = document.createElement("audio"); 
+let audioCrackShip = document.createElement("audio"); 
+let audioDeadShip = document.createElement("audio"); 
+let audioWin = document.createElement("audio"); 
+let audioFail = document.createElement("audio"); 
+
+
+function soundFailClick() {
+    if (audioON == true) {
+    audioFailClick.src = 'audio/failShot.mp3'; 
+    audioFailClick.autoplay = true; 
+    setTimeout(stopFailClick,2000);
+    }
+}
+function soundCrackShip() {
+    if (audioON == true) {
+    audioCrackShip.src = 'audio/crackShip.mp3'; 
+    audioCrackShip.autoplay = true; 
+    setTimeout(stopCrackShip,2000);
+    }
+}
+function soundDeadShip() {
+    if (audioON == true) {
+    audioDeadShip.src = 'audio/deadShip.mp3'; 
+    audioDeadShip.autoplay = true; 
+    setTimeout(stopDeadShip,2000);
+    }
+}
+function soundWin() {
+    if (audioON == true) {
+    audioWin.src = 'audio/win.mp3'; 
+    audioWin.autoplay = true; 
+    }
+}
+function soundFail() {
+    if (audioON == true) {
+    audioFail.src = 'audio/fail.mp3'; 
+    audioFail.autoplay = true; 
+    }
+}
+
+function stopFailClick() {
+    audioFailClick.pause();
+    audioFailClick.currentTime = 0;
+}
+function stopCrackShip() {
+    audioCrackShip.pause();
+    audioCrackShip.currentTime = 0;
+}
+function stopDeadShip() {
+    audioDeadShip.pause();
+    audioDeadShip.currentTime = 0;
+}
 
 //создание игрового поля
 
@@ -440,6 +535,9 @@ function startGameFunc() {
     centerField.removeChild(startGame);
     centerField.removeChild(replacing);
     information.innerHTML = "";
+    rigthFieldText.classList.add("rigthFieldTextOnlyForSmallScreen");
+    runningGame = true;
+    stopPirates();
     let whoFirst = getRandomBoolean();
     if (whoFirst == true) {
         information.innerHTML = "<p>Стреляйте!</p>";
@@ -829,6 +927,7 @@ function AttackUserInt() {
         field[i1][j1].labelShooting=true;
         field[i1][j1].classList.remove("hover");
         information.innerHTML = "<p>Вы потопили однопалубный корабль!</p>";
+        soundDeadShip();
         colorGreen();
         counterAIShips--;
         if (counterAIShips == 0) {
@@ -850,6 +949,7 @@ function AttackUserInt() {
         field[i1][j1].classList.remove("hover");
         Desk2Ship1Health=1;
         information.innerHTML = "<p>Вы попали!</p>";
+        soundCrackShip();
         colorGreen();
         AttackUser();
         }
@@ -865,6 +965,7 @@ function AttackUserInt() {
         field[shootingXYUser[0][1]][shootingXYUser[1][1]].classList.remove('FailShot');
         Desk2Ship1Health=0;
         information.innerHTML = "<p>Вы потопили двухпалубный корабль!</p>";
+        soundDeadShip();
         colorGreen();
         counterAIShips--;
         if (counterAIShips == 0) {
@@ -885,6 +986,7 @@ function AttackUserInt() {
         field[i1][j1].classList.remove("hover");
         Desk2Ship2Health=1;
         information.innerHTML = "<p>Вы попали!</p>";
+        soundCrackShip();
         colorGreen();
         AttackUser();
         }
@@ -900,6 +1002,7 @@ function AttackUserInt() {
         field[shootingXYUser[0][3]][shootingXYUser[1][3]].classList.remove('FailShot');
         Desk2Ship2Health=0;
         information.innerHTML = "<p>Вы потопили двухпалубный корабль!</p>";
+        soundDeadShip();
         colorGreen();
         counterAIShips--;
         if (counterAIShips == 0) {
@@ -920,6 +1023,7 @@ function AttackUserInt() {
         field[i1][j1].classList.remove("hover");
         Desk2Ship3Health=1;
         information.innerHTML = "<p>Вы попали!</p>";
+        soundCrackShip();
         colorGreen();
         AttackUser();
         }
@@ -935,6 +1039,7 @@ function AttackUserInt() {
         field[shootingXYUser[0][5]][shootingXYUser[1][5]].classList.remove('FailShot');
         Desk2Ship3Health=0;
         information.innerHTML = "<p>Вы потопили двухпалубный корабль!</p>";
+        soundDeadShip();
         colorGreen();
         counterAIShips--;
         if (counterAIShips == 0) {
@@ -955,6 +1060,7 @@ function AttackUserInt() {
         field[i1][j1].classList.remove("hover");
         Desk3Ship1Health=2;
         information.innerHTML = "<p>Вы попали!</p>";
+        soundCrackShip();
         colorGreen();
         AttackUser();
         }
@@ -966,6 +1072,7 @@ function AttackUserInt() {
             field[i1][j1].classList.remove("hover");
             Desk3Ship1Health=1;
             information.innerHTML = "<p>Вы попали!</p>";
+            soundCrackShip();
             colorGreen();
             AttackUser();
             }
@@ -983,6 +1090,7 @@ function AttackUserInt() {
         field[shootingXYUser[0][8]][shootingXYUser[1][8]].classList.remove('FailShot');
         Desk3Ship1Health=0;
         information.innerHTML = "<p>Вы потопили трёхпалубный корабль!</p>";
+        soundDeadShip();
         colorGreen();
         counterAIShips--;
         if (counterAIShips == 0) {
@@ -1003,6 +1111,7 @@ function AttackUserInt() {
         field[i1][j1].classList.remove("hover");
         Desk3Ship2Health=2;
         information.innerHTML = "<p>Вы попали!</p>";
+        soundCrackShip();
         colorGreen();
         AttackUser();
         }
@@ -1014,6 +1123,7 @@ function AttackUserInt() {
             field[i1][j1].classList.remove("hover");
             Desk3Ship2Health=1;
             information.innerHTML = "<p>Вы попали!</p>";
+            soundCrackShip();
             colorGreen();
             AttackUser();
             }
@@ -1031,6 +1141,7 @@ function AttackUserInt() {
         field[shootingXYUser[0][11]][shootingXYUser[1][11]].classList.remove('FailShot');
         Desk3Ship2Health=0;
         information.innerHTML = "<p>Вы потопили трёхпалубный корабль!</p>";
+        soundDeadShip();
         colorGreen();
         counterAIShips--;
         if (counterAIShips == 0) {
@@ -1050,6 +1161,7 @@ function AttackUserInt() {
             field[i1][j1].classList.remove("hover");
             Desk4Ship1Health=3;
             information.innerHTML = "<p>Вы попали!</p>";
+            soundCrackShip();
             colorGreen();
             AttackUser();
         }
@@ -1061,6 +1173,7 @@ function AttackUserInt() {
             field[i1][j1].classList.remove("hover");
             Desk4Ship1Health=2;
             information.innerHTML = "<p>Вы попали!</p>";
+            soundCrackShip();
             colorGreen();
             AttackUser();
         }
@@ -1072,6 +1185,7 @@ function AttackUserInt() {
             field[i1][j1].classList.remove("hover");
             Desk4Ship1Health=1;
             information.innerHTML = "<p>Вы попали!</p>";
+            soundCrackShip();
             colorGreen();
             AttackUser();
         }
@@ -1091,6 +1205,7 @@ function AttackUserInt() {
             field[shootingXYUser[0][15]][shootingXYUser[1][15]].classList.remove('FailShot');
             Desk4Ship1Health=0;
             information.innerHTML = "<p>Вы потопили четырёхпалубный корабль!</p>";
+            soundDeadShip();
             colorGreen();
             counterAIShips--;
             if (counterAIShips == 0) {
@@ -1108,19 +1223,31 @@ function AttackUserInt() {
         field[i1][j1].classList.remove("hover");
         arrow.classList.remove("arrow180");
         information.innerHTML = "<p>Мимо!</p>";
+        soundFailClick();
         colorRed();
         AttackAI();
     }
+
 }
 }
 }
+
 
 //функция для победы юзера
 function userWin() {
     information.innerHTML = "<p>Вы победили!</p>";
     colorGreen();
     centerField.removeChild(arrow);
+    let restartGame = document.createElement("button");
+    restartGame.classList.add("startGame");
+    centerField.appendChild(restartGame);
+    restartGame.innerHTML = "<p>Начать заново!</p>";
+    firstGame = false;
+    restartGame.addEventListener("click",restart);
+    soundWin();
 }
+
+//расстановка меток на поле
 function intShootingLabel(i,j) {
     try {field[i+1][j].classList.add('FailShot');
         field[i+1][j].labelShooting = true;} 
@@ -1305,7 +1432,7 @@ else if (needToShootToShipSecond == true) {
 
 function checkByLabelShootingAI() {
     if (userField[xAttackAI][yAttackAI].labelShooting == false) {
-        setTimeout (AttackAIInt,1000);
+        setTimeout (AttackAIInt,2000);
         return;
     }
     else if (userField[xAttackAI][yAttackAI].labelShooting == true) {
@@ -1336,6 +1463,7 @@ function checkByLabelShootingAI() {
             needToShootToShip=false;
             needToShootToShipSecond = false;
             information.innerHTML = "<p>Ваш однопалубный корабль потопили!</p>";
+            soundDeadShip();
             colorRed();
             counterUserShips--;
             if (counterUserShips == 0) {
@@ -1354,6 +1482,7 @@ function checkByLabelShootingAI() {
             shootingXY[1][0]=yAttackAI;
             Desk2Ship1HealthUser=1;
             information.innerHTML = "<p>В вас попали!</p>";
+            soundCrackShip();
             colorRed();
             AI();
             return;
@@ -1384,6 +1513,7 @@ function checkByLabelShootingAI() {
             shootingXY[1][2]=yAttackAI;
             Desk2Ship2HealthUser=1;
             information.innerHTML = "<p>В вас попали!</p>";
+            soundCrackShip();
             colorRed();
             AI();
             return;
@@ -1414,6 +1544,7 @@ function checkByLabelShootingAI() {
             shootingXY[1][4]=yAttackAI;
             Desk2Ship3HealthUser=1;
             information.innerHTML = "<p>В вас попали!</p>";
+            soundCrackShip();
             colorRed();
             AI();
             return;
@@ -1444,6 +1575,7 @@ function checkByLabelShootingAI() {
             shootingXY[1][6]=yAttackAI;
             Desk3Ship1HealthUser=2;
             information.innerHTML = "<p>В вас попали!</p>";
+            soundCrackShip();
             colorRed();
             AI();
             return;
@@ -1456,6 +1588,7 @@ function checkByLabelShootingAI() {
                 Desk3Ship1HealthUser=1;
                 needToShootToShipSecond = true;
                 information.innerHTML = "<p>В вас попали!</p>";
+                soundCrackShip();
                 colorRed();
                 AI();
                 return;
@@ -1486,6 +1619,7 @@ function checkByLabelShootingAI() {
             shootingXY[1][9]=yAttackAI;
             Desk3Ship2HealthUser=2;
             information.innerHTML = "<p>В вас попали!</p>";
+            soundCrackShip();
             colorRed();
             AI();
             return;
@@ -1498,6 +1632,7 @@ function checkByLabelShootingAI() {
                 Desk3Ship2HealthUser=1;
                 needToShootToShipSecond = true;
                 information.innerHTML = "<p>В вас попали!</p>";
+                soundCrackShip();
                 colorRed();
                 AI();
                 return;
@@ -1528,6 +1663,7 @@ function checkByLabelShootingAI() {
             shootingXY[1][12]=yAttackAI;
             Desk4Ship1HealthUser=3;
             information.innerHTML = "<p>В вас попали!</p>";
+            soundCrackShip();
             colorRed();
             AI();
             return;
@@ -1540,6 +1676,7 @@ function checkByLabelShootingAI() {
                 Desk4Ship1HealthUser=2;
                 needToShootToShipSecond = true;
                 information.innerHTML = "<p>В вас попали!</p>";
+                soundCrackShip();
                 colorRed();
                 AI();
                 return;
@@ -1552,6 +1689,7 @@ function checkByLabelShootingAI() {
                 Desk4Ship1HealthUser=1;
                 needToShootToShipSecond = true;
                 information.innerHTML = "<p>В вас попали!</p>";
+                soundCrackShip();
                 colorRed();
                 AI();
                 return;
@@ -1587,7 +1725,8 @@ function checkByLabelShootingAI() {
                 xAttackAI=xCrackedShip2;
                 yAttackAI=yCrackedShip2;
             } 
-            setTimeout (AttackUser,1000);
+            soundFailClick();
+            setTimeout (AttackUser,2000);
             return;
         }
     
@@ -1606,10 +1745,18 @@ function AIWin() {
     information.innerHTML = "<p>Вы проиграли!</p>";
     colorRed();
     centerField.removeChild(arrow);
+    let restartGame = document.createElement("button");
+    restartGame.classList.add("startGame");
+    centerField.appendChild(restartGame);
+    restartGame.innerHTML = "<p>Начать заново!</p>";
+    firstGame = false;
+    restartGame.addEventListener("click",restart);
+    soundFail();
 }
 
 //функция для потопления корабля
 function killShip(deskShip,x1,y1,x2,y2,x3,y3,x4,y4) {
+    soundDeadShip();
     intShootingLabelAI(x1,y1);
     intShootingLabelAI(x2,y2);
     userField[x1][y1].classList.remove('FailShot');
@@ -1630,4 +1777,13 @@ function killShip(deskShip,x1,y1,x2,y2,x3,y3,x4,y4) {
     needToShootToShip = false;
     needToShootToShipSecond = false;
 }
+
+//функция для перезапуска игры
+function restart() {
+    container.removeChild(containerInt);
+    runningGame = false;
+    soundPirates();
+    SEA_BATTLE_GAME();
 }
+}
+

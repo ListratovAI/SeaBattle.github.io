@@ -13,6 +13,10 @@ $bottomsFontColor: #FFFFFF;
     justify-content: space-around;
     align-items: center;
 
+.audioButton
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
 
 .seaBattle 
     color: $textColor;
@@ -46,61 +50,57 @@ $bottomsFontColor: #FFFFFF;
     margin-right: 10px;
 
 
-
+@mixin bottoms($widthBottom)
+    background-color: $bottomsBGColor;
+    width: $widthBottom;
+    height: 50px;
+    color: $bottomsFontColor;
+    margin-top: 30px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover
+        cursor: pointer;
+    
 
 .seaBattleBottom 
-    background-color: $bottomsBGColor;
-    width: 200px;
-    height: 50px;
-    color: $bottomsFontColor;
-    margin-top: 30px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+    @include bottoms(200px);
+    
+    p
+        margin: 0px;
 
 .startGame
-    width: 350px;
-    background-color: $bottomsBGColor;
-    height: 50px;
-    color: $bottomsFontColor;
-    margin-top: 30px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+    @include bottoms(350px);
+
+    p
+        margin: 0px;
+    
 
 .replacing 
-    width: 350px;
-    background-color: $bottomsBGColor;
-    height: 50px;
-    color: $bottomsFontColor;
-    margin-top: 30px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
-.replacing p 
-    margin: 0px;
+    @include bottoms(350px);
 
-.startGame p 
-    margin: 0px;
+    p
+        margin: 0px;
+    
 
-.seaBattleBottom p
-    margin: 0px;
+@mixin leftAndRightText
+
+    color: $textColor;
+    text-align: center;
+    font-size: 24px;
+    font-family: RobotoMedium;
 
 .leftFieldText 
-    color: $textColor;
-    text-align: center;
-    font-size: 24px;
-    font-family: RobotoMedium;
+
+    @include leftAndRightText
+    
 
 .rigthFieldText 
-    font-size: 24px;
-    color: $textColor;
-    text-align: center;
-    font-family: RobotoMedium;
+    @include leftAndRightText
 
 .string 
     background-color: white;
@@ -141,29 +141,31 @@ $bottomsFontColor: #FFFFFF;
 .ship1 
     background-color: #FFC11E;
 
-.buttonShip4 
-    width: 120px;
+
+@mixin buttonships($width) 
+    width: $width;
     height: 30px;
     margin-top: 10px;
     background-color: #FFC11E;
+    &:hover
+        cursor: pointer;
+    
+
+.buttonShip4 
+
+    @include buttonships(120px);
 
 .buttonShip3 
-    width: 90px;
-    height: 30px;
-    margin-top: 10px;
-    background-color: #FFC11E;
+
+    @include buttonships(90px);
 
 .buttonShip2 
-    width: 60px;
-    height: 30px;
-    margin-top: 10px;
-    background-color: #FFC11E;
+
+    @include buttonships(60px);
 
 .buttonShip1 
-    width: 30px;
-    height: 30px;
-    margin-top: 10px;
-    background-color: #FFC11E;
+
+    @include buttonships(30px);
 
 .buttomsForChange 
     display: flex;
@@ -223,6 +225,8 @@ $bottomsFontColor: #FFFFFF;
     border-color: #D2AA1B;
     border-radius: 10px;
     margin-top: 10px;
+    &:hover
+        cursor: pointer;
 
 .userShip4 
     background-color: gold;
@@ -270,6 +274,10 @@ $bottomsFontColor: #FFFFFF;
 .notCrackedShip 
     background-color: gold;
 
+.hover 
+    background-color: cornflowerblue;
+    cursor: pointer;
+
 @media (max-width: 844px) 
     .container 
         flex-direction: column ;
@@ -281,10 +289,11 @@ $bottomsFontColor: #FFFFFF;
     
     .arrow 
         transform: rotate(90deg);
+        top: 700px;
     
     .arrow180 
         transform: rotate(270deg);
-    
+        top: 700px;
+    .rigthFieldTextOnlyForSmallScreen
+        margin-top: 150px;
 
-.hover 
-    background-color: cornflowerblue;
