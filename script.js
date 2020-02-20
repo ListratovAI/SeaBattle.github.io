@@ -457,9 +457,14 @@ buttomsShips.appendChild (buttonShip1);
 let i1;
 let j1;
 let desk;
+let counter4=1;
+buttonShip4.innerHTML = counter4;
 let counter3=2;
+buttonShip3.innerHTML = counter3;
 let counter2=3;
+buttonShip2.innerHTML = counter2;
 let counter1=4;
+buttonShip1.innerHTML = counter1;
 let userDirection = false;
 let userBad = false;
 let xAttackAI;
@@ -631,6 +636,7 @@ function addShipsInt() {
         }
         else if (desk==3 && counter3!=1){
             --counter3;
+            buttonShip3.innerHTML = counter3;
         }
         else if (desk==2 && counter2==1){
             buttonShip2.remove();
@@ -638,12 +644,15 @@ function addShipsInt() {
         }
         else if (desk==2 && counter2!=1){
             --counter2;
+            buttonShip2.innerHTML = counter2;
         }
         else if (desk==1 && counter1==1){
             buttonShip1.remove();
+            --counter1;
         }
         else if (desk==1 && counter1!=1){
             --counter1;
+            buttonShip1.innerHTML = counter1;
         }
 //установка кораблей
     if (userDirection==true){
@@ -714,39 +723,48 @@ function addShipsInt() {
             }
         }
     }
-
-    //удаление всех EventListenerов
-        for (let k=0;k<=9;k++) {
-                for (let q = 0; q <= 9; q++) {
-                    userField[k][q].removeEventListener("mouseover",mouseIn);
-                    userField[k][q].removeEventListener("mouseout",mouseOut);
-                    userField[k][q].removeEventListener('click', addShips);
-                }
-            } 
-            counterShips--;
-}
+    counterShips--;
+    if (desk==4 || desk==3 && counter3+1==1 || desk==2 && counter2+1==1 || desk==1 && counter1+1==1){
+        removeAllEventListener();
+    }
 
 }
 
+}
+//удаление всех EventListenerов
+function removeAllEventListener() {   
+    for (let k=0;k<=9;k++) {
+        for (let q = 0; q <= 9; q++) {
+            userField[k][q].removeEventListener("mouseover",mouseIn);
+            userField[k][q].removeEventListener("mouseout",mouseOut);
+            userField[k][q].removeEventListener('click', addShips);
+        }
+    } 
+
+}
 // информация о количестве палуб и ссылка на функцию расстановки кораблей
 function addShip4 () {
     desk = 4;
     buttonShip4.classList.add('selectedButtonShip4');
+    removeAllEventListener();
     addShipInt();
 }
 function addShip3 () {
     desk=3;
     buttonShip3.classList.add('selectedButtonShip3');
+    removeAllEventListener();
     addShipInt();
 }
 function addShip2 () {
     desk=2;
     buttonShip2.classList.add('selectedButtonShip2');
+    removeAllEventListener();
     addShipInt();
 }
 function addShip1 () {
     desk=1;
     buttonShip1.classList.add('selectedButtonShip1');
+    removeAllEventListener();
     addShipInt();
 }
 //все eventlistenerы
